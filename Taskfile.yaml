@@ -1,0 +1,26 @@
+---
+version: '3'
+
+vars:
+  VAULT_PATH: ./vars/vault.yaml
+tasks:
+  bootstrap:
+    desc: Bootstrap the environment
+    cmds:
+      - task: deps
+  deps:
+    desc: Install dependencies
+    cmds:
+      - ansible-galaxy role install -r requirements.yaml
+  run:
+    desc: test
+    cmds:
+      - ansible-playbook playbook.yaml
+  ve:
+    desc: Edit vault
+    cmds:
+      - ansible-vault edit {{ .VAULT_PATH }}
+  default:
+    cmds:
+      - task -l
+    silent: true

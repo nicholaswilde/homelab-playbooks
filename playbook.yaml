@@ -1,0 +1,82 @@
+---
+- name: Setup Ubuntu LXC
+  hosts: ubuntu
+  remote_user: root
+  vars_files:
+    - vars/vault.yaml
+
+  tasks:
+    - name: Install apt packages
+      ansible.builtin.apt:
+        pkg:
+          - git
+          - gpg
+          - nfs-common
+          - autofs
+        state: latest
+        update_cache: true
+
+    - name: Create a user '{{ lxc_user }}' with a home directory
+      ansible.builtin.user:
+        name: '{{ lxc_user }}'
+        create_home: true
+        shell: /bin/bash
+        password: "{{ ansible_password | password_hash('sha512') }}"
+        groups: adm,cdrom,sudo,dip  # sambashare,lpadmin,plugdev
+        append: true
+
+    - name: Update auto.master for autofs
+      ansible.builtin.lineinfile:
+        path: /etc/auto.master
+        state: present
+        line: '/mnt /etc/auto.nfs --ghost --timeout=60'
+
+    - name: Create auto.nfs
+      ansible.builtin.lineinfile:
+        path: /etc/auto.nfs
+        state: present
+        create: true
+        line: 'storage -fstype=nfs4,rw 192.168.1.169:/srv/storage'
+
+    - name: Restart service autofs, in all cases
+      ansible.builtin.service:
+        name: autofs
+        state: restarted
+
+    - name: Set authorized keys taken from url
+      ansible.posix.authorized_key:
+        user: '{{ lxc_user }}'
+        state: present
+        key: https://github.com/nicholaswilde.keys
+
+    - name: ensure private key is present
+      copy:
+        src: /home/nicholas/.ssh/id_rsa
+        dest: '/home/{{ lxc_user }}/.ssh/id_rsa'
+        mode: 0600
+        owner: '{{ lxc_user }}'
+        group: '{{ lxc_user }}'
+
+    - name: git user.email
+      git_config:
+        name: user.email
+        scope: global
+        value: ncwilde43@gmail.com
+
+    - name: git user.name
+      git_config:
+        name: user.name
+        scope: global
+        value: "nιcнolaѕ wιlde"
+
+    - name: git init.defaultBranch
+      git_config:
+        name: init.defaultBranch
+        scope: global
+        value: main
+
+    - name: git init.rebase
+      git_config:
+        name: init.defaultBranch
+        scope: global
+        value: false
