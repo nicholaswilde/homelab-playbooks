@@ -14,7 +14,7 @@ tasks:
     cmds:
       - ansible-galaxy role install -r requirements.yaml
   run:
-    desc: test
+    desc: Run playbook
     cmds:
       - ansible-playbook playbooks/setup_lxc.yaml
   ve:
