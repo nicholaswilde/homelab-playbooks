@@ -10,19 +10,19 @@ An ansible playbook for my homelab
 ## :hammer_and_wrench: &nbsp; Usage
 
 ```shell
-ansible-playbook playbook.yaml
+ansible-playbook playbooks/setup_lxc.yaml
 Vault password:
 ```
 ---
 
 ## :gear: &nbsp; Variables
 
-Variables are stored in `vars/vault.yaml` which is encrypted using [ansible-vault][2].
+Variables are stored in `roles/<role>/vars/main.yaml` which is encrypted using [ansible-vault][2].
 
 The vault password is prompted during run.
 
 ```yaml
-# vars/vault.yaml.tmpl
+# roles/<role>/vars/main.yaml
 ---
 lxc_user: foo
 ansible_user: bar
