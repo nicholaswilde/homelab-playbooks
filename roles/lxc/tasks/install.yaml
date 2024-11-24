@@ -1,0 +1,10 @@
+---
+- name: Install apt packages
+  ansible.builtin.apt:
+    pkg:
+      - git
+      - gpg
+      - nfs-common
+      - autofs
+    state: latest
+    update_cache: true

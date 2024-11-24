@@ -1,0 +1,14 @@
+---
+- name: Set authorized keys taken from url
+  ansible.posix.authorized_key:
+    user: root
+    state: present
+    key: https://github.com/nicholaswilde.keys
+
+- name: ensure private key is present
+  copy:
+    src: /home/nicholas/.ssh/id_rsa
+    dest: '/root/.ssh/id_rsa'
+    mode: 0600
+    owner: root
+    group: root

@@ -1,0 +1,29 @@
+---
+- include_tasks: install.yaml
+- include_tasks: autofs.yaml
+- include_tasks: ssh.yaml
+- include_tasks: git.yaml
+# 
+# - name: git user.email
+#   git_config:
+#     name: user.email
+#     scope: global
+#     value: ncwilde43@gmail.com
+# 
+# - name: git user.name
+#   git_config:
+#     name: user.name
+#     scope: global
+#     value: "nιcнolaѕ wιlde"
+# 
+# - name: git init.defaultBranch
+#   git_config:
+#     name: init.defaultBranch
+#     scope: global
+#     value: main
+# 
+# - name: git init.rebase
+#   git_config:
+#     name: init.defaultBranch
+#     scope: global
+#     value: false

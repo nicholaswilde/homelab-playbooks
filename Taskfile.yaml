@@ -2,7 +2,8 @@
 version: '3'
 
 vars:
-  VAULT_PATH: ./vars/vault.yaml
+  VAULT_PATH: ./roles/lxc/vars/main.yaml
+
 tasks:
   bootstrap:
     desc: Bootstrap the environment
@@ -15,7 +16,7 @@ tasks:
   run:
     desc: test
     cmds:
-      - ansible-playbook playbook.yaml
+      - ansible-playbook playbooks/setup_lxc.yaml
   ve:
     desc: Edit vault
     cmds:
