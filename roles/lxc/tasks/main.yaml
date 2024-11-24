@@ -1,5 +1,13 @@
 ---
+- name: Get user variables
+  user:
+    name: root
+    state: present
+  register: user
+
 - include_tasks: install.yaml
 - include_tasks: autofs.yaml
 - include_tasks: ssh.yaml
 - include_tasks: git.yaml
+- include_tasks: gpg.yaml
+- include_tasks: bash.yaml

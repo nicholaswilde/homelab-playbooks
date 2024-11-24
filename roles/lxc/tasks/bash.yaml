@@ -1,0 +1,21 @@
+---
+- name: change user shell to bash
+  user:
+    name: root
+    shell: /bin/bash
+
+- name: Update .bash_aliases
+  copy:
+    src: .bash_aliases
+    dest: "{{ user.home }}/.bash_aliases"
+
+- name: Replace old hostname with new hostname (requires Ansible >= 2.4)
+  ansible.builtin.replace:
+    path: /root/.bashrc
+    regexp: 'xterm-color\) color_prompt=yes;;$'
+    replace: 'xterm-color|xterm-256color) color_prompt=yes;;'
+
+- name: source bashrc
+  shell: source /root/.bashrc
+  args:
+    executable: /bin/bash

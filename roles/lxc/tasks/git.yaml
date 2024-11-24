@@ -22,3 +22,9 @@
     name: init.defaultBranch
     scope: global
     value: false
+
+- name: Create git folders
+  ansible.builtin.file:
+    path: '{{ user.home }}/{{ git_folder }}'
+    state: directory
+    recurse: true

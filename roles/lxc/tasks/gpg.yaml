@@ -1,0 +1,26 @@
+---
+
+- name: Copy gpg files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+    - src: "/home/nicholas/{{ gpg_files.private }}"
+      dest: "{{ user.home }}/{{ gpg_files.private }}"
+    - src: "/home/nicholas/{{ gpg_files.public }}"
+      dest: "{{ user.home }}/{{ gpg_files.public }}"
+
+- name: Import gpg files
+  command: >
+    gpg --import {{ item.dest }}
+  loop:
+    - dest: "{{ user.home }}/{{ gpg_files.public }}"
+    - dest: "{{ user.home }}/{{ gpg_files.private }}"
+
+- name: Cleanup gpp files
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  loop:
+    - dest: "{{ user.home }}/{{ gpg_files.public }}"
+    - dest: "{{ user.home }}/{{ gpg_files.private }}"
