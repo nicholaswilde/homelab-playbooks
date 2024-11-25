@@ -8,3 +8,18 @@
       - autofs
     state: latest
     update_cache: true
+
+- name: Download micro editor install script
+  ansible.builtin.get_url:
+    url: "https://getmic.ro"
+    dest: /tmp/micro.sh
+
+- name: Execute script
+  shell:
+    cmd: /bin/bash /tmp/micro.sh
+    chdir: "/usr/bin/"
+
+- name: Remove install script
+  file:
+    path: /tmp/micro.sh
+    state: absent
