@@ -13,10 +13,14 @@ tasks:
     desc: Install dependencies
     cmds:
       - ansible-galaxy role install -r requirements.yaml
-  run:
-    desc: Run playbook
+  setup:
+    desc: Setup LXCs
     cmds:
       - ansible-playbook playbooks/setup_lxc.yaml
+  update:
+    desc: Update LXCs
+    cmds:
+      - ansible-playbook playbooks/update_lxc.yaml
   ve:
     desc: Edit vault
     cmds:

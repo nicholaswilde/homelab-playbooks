@@ -4,4 +4,4 @@
     - lxcHosts
     # - lxcTests
   roles:
-    - setup
+    - update

@@ -1,0 +1,18 @@
+---
+- name: Get user variables
+  user:
+    name: root
+    state: present
+  register: user
+
+- name: Update all packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+
+# - include_tasks: install.yaml
+# - include_tasks: autofs.yaml
+# - include_tasks: ssh.yaml
+# - include_tasks: git.yaml
+# - include_tasks: gpg.yaml
+# - include_tasks: bash.yaml
