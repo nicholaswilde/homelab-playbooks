@@ -1,18 +1,14 @@
 ---
-- name: Get user variables
-  user:
-    name: root
-    state: present
-  register: user
-
 - name: Update all packages to their latest version
   ansible.builtin.apt:
     name: "*"
     state: latest
 
-# - include_tasks: install.yaml
-# - include_tasks: autofs.yaml
-# - include_tasks: ssh.yaml
-# - include_tasks: git.yaml
-# - include_tasks: gpg.yaml
-# - include_tasks: bash.yaml
+- name: Remove dependencies that are no longer required and purge their configuration files
+  ansible.builtin.apt:
+    autoremove: true
+    purge: true
+
+- name: Run the equivalent of "apt-get clean" as a separate step
+  ansible.builtin.apt:
+    clean: true
