@@ -9,6 +9,11 @@
     src: .bash_aliases
     dest: "{{ user.home }}/.bash_aliases"
 
+- name: Update .bashrc
+  copy:
+    src: .bashrc
+    dest: "{{ user.home }}/.bashrc"
+
 - name: Replace old hostname with new hostname (requires Ansible >= 2.4)
   ansible.builtin.replace:
     path: /root/.bashrc

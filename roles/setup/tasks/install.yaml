@@ -1,4 +1,9 @@
 ---
+- name: Setup apt-cacher-ng source
+  copy:
+    src: 00aptproxy
+    dest: "/etc/apt/apt.conf.d/00aptproxy"
+
 - name: Install apt packages
   ansible.builtin.apt:
     pkg:
@@ -6,6 +11,7 @@
       - gpg
       - nfs-common
       - autofs
+      - pipx
     state: latest
     update_cache: true
 
