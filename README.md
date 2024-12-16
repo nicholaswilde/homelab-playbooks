@@ -3,7 +3,7 @@
 
 [![task](https://img.shields.io/badge/task-enabled-brightgreen?logo=task&logoColor=white&style=for-the-badge)](https://taskfile.dev/)
 
-An ansible playbook for my homelab
+Ansible playbooks for my homelab
 
 ---
 
