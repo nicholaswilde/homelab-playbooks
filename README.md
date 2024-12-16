@@ -1,5 +1,5 @@
 <!-- markdownlint-disable-next-line no-trailing-punctuation -->
-# :home: homelab-playbook :rocket:
+# :house_with_garden: homelab-playbooks :rocket:
 
 [![task](https://img.shields.io/badge/task-enabled-brightgreen?logo=task&logoColor=white&style=for-the-badge)](https://taskfile.dev/)
 
