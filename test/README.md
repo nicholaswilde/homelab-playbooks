@@ -8,7 +8,7 @@ Change the Docker image in Dockerfile.
 
 Update [machine-setup.yml](machine-setup.yml) file with the test ansible playbook.
 
-## Usage
+## :hammer_and_wrench: Usage
 
 ```shell
 chmod +x ./setup-container.sh
