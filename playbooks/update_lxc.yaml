@@ -1,8 +1,7 @@
 ---
 - hosts:
-    - lxcClients
     - lxcHosts
-    # - lxcTests
+  become: true
 
   roles:
     - update

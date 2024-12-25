@@ -1,6 +1,7 @@
 ---
 - hosts:
-    - lxcHosts
+    - ubuntu
   become: true
+
   roles:
-    - setup
+    - update

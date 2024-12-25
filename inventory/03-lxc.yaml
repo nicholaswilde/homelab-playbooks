@@ -1,0 +1,33 @@
+---
+lxcHosts:
+  vars:
+    ansible_user: root
+  hosts:
+    homepage:
+      ansible_host: 192.168.1.47
+    grafana:
+      ansible_host: 192.168.1.237
+    prometheus:
+      ansible_host: 192.168.1.96
+    omv:
+      ansible_host: 192.168.2.19
+    passgen:
+      ansible_host: 192.168.1.144
+    gitea:
+      ansible_host: 192.168.2.20
+    authentik:
+      ansible_host: 192.168.2.107
+    adguard01:
+      ansible_host: 192.168.1.13
+    qbittorrent:
+      ansible_host: 192.168.2.57
+    changedetection:
+      ansible_host: 192.168.2.162
+    influx:
+      ansible_host: 192.168.1.109
+    aptcache:
+      ansible_host: 192.168.2.40
+    myspeed:
+      ansible_host: 192.168.2.136
+    aria2:
+      ansible_host: 192.168.2.21

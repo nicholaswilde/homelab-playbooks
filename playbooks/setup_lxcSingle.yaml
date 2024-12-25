@@ -1,6 +1,6 @@
 ---
 - hosts:
-    - lxcHosts
+    - lxcSingle
   become: true
   roles:
     - setup

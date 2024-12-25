@@ -10,7 +10,7 @@
     path: /etc/auto.nfs
     state: present
     create: true
-    line: 'storage -fstype=nfs4,rw 192.168.1.169:/srv/storage'
+    line: 'storage -fstype=nfs4,rw 192.168.2.19:/storage'
 
 - name: Restart service autofs, in all cases
   ansible.builtin.service:
