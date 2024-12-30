@@ -14,5 +14,8 @@
       - ipcalc
       - net-tools
       - micro
+      - qemu-guest-agent
+      - gh
+      - screen
     state: latest
     update_cache: true
