@@ -3,7 +3,7 @@
 
 [![task](https://img.shields.io/badge/task-enabled-brightgreen?logo=task&logoColor=white&style=for-the-badge)](https://taskfile.dev/)
 
-Ansible playbooks for my homelab
+Ansible playbooks for my [homelab][3]
 
 ---
 
@@ -45,3 +45,4 @@ ansible_password: baz
 
 [1]: <https://github.com/nicholaswilde/>
 [2]: <https://docs.ansible.com/ansible/latest/vault_guide/vault.html>
+[3]: <https://nicholaswilde.io/homelab>
