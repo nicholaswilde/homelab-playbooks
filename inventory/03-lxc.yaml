@@ -23,11 +23,23 @@ lxcHosts:
       ansible_host: 192.168.2.57
     changedetection:
       ansible_host: 192.168.2.162
-    influx:
-      ansible_host: 192.168.1.109
-    aptcache:
+    influxdb:
+      ansible_host: 192.168.1.15
+    aptcacher:
       ansible_host: 192.168.2.40
     myspeed:
       ansible_host: 192.168.2.136
     aria2:
       ansible_host: 192.168.2.21
+    unbound:
+      ansible_host: 192.168.2.23
+    installer:
+      ansible_host: 192.168.1.26
+    vaultwarden:
+      ansible_host: 192.168.2.25
+    gridcoin:
+      ansible_host: 192.168.2.55
+    traefik:
+      ansible_host: 192.168.1.46
+    immich:
+      ansible_host: 192.168.2.27

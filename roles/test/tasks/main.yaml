@@ -1,0 +1,36 @@
+---
+# - name: Install SOPS on remote hosts
+#   ansible.builtin.include_role:
+#     name: community.sops.install
+# 
+# - name: Install SOPS
+#   ansible.builtin.include_role:
+#     name: community.sops.install
+#   vars:
+#     sops_github_latest_detection: latest-release
+#     sops_become_on_install: true
+
+- name: get the latest release details
+  uri:
+    url: https://api.github.com/repos/prometheus/node_exporter/releases/latest
+    method: GET
+  register: node_exp_release
+  delegate_to: localhost
+
+- name: set the release facts
+  set_fact:
+    file_name: "{{ node_exp_latest.name }}"
+    download_url: "{{ node_exp_latest.browser_download_url }}"
+  vars:
+    node_exp_latest: "{{ node_exp_release.json|to_json|from_json|community.general.json_query('assets[?ends_with(name,`linux-amd64.tar.gz`)]')|first }}"
+#     
+# - name: Get gogs latest tag 
+#   community.general.github_release:
+#     user: getsops
+#     repo: sops
+#     action: latest_release
+#   register: sops_latest 
+
+- name: Display the value of 'node_exp_latest'
+  ansible.builtin.debug:
+    msg: "The value of sops_latest is {{ node_exp_latest }}"

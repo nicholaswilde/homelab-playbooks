@@ -1,0 +1,7 @@
+---
+- hosts:
+    - lxcSingle
+  become: true
+
+  roles:
+    - test
