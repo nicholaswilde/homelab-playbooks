@@ -17,5 +17,6 @@
       - qemu-guest-agent
       - gh
       - screen
+      - dnsutils
     state: latest
     update_cache: true

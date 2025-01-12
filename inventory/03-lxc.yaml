@@ -45,3 +45,5 @@ lxcHosts:
       ansible_host: 192.168.2.27
     mailrise:
       ansible_host: 192.168.1.62
+    netbootxyz:
+      ansible_host: 192.168.1.222
