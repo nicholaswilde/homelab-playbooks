@@ -1,0 +1,30 @@
+---
+- name: Install beszel-agent
+  ansible.builtin.shell: "curl -s https://installer.l.nicholaswilde.io/henrygd/beszel?as=beszel-agent | bash"
+  args:
+    chdir: "/usr/local/bin"
+
+- name: Create beszel agent service file
+  ansible.builtin.template:
+    src: beszel-agent.service.j2
+    dest: /etc/systemd/system/beszel-agent.service
+
+- name: Setup update service
+  copy:
+    src: beszel-agent-update.service
+    dest: "/etc/systemd/system/beszel-agent-update.service"
+
+- name: Setup timer
+  copy:
+    src: beszel-agent-update.timer
+    dest: "/etc/systemd/system/beszel-agent-update.timer"
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+    name: beszel-agent.service
+    enabled: true
+    state: started
+
+- name: Enable beszel-agent-update.timer
+  ansible.builtin.shell: "systemctl enable --now beszel-agent-update.timer"

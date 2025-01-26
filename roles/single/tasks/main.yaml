@@ -1,0 +1,33 @@
+---
+
+- name: Remove task
+  file:
+    path: /usr/local/bin/task
+    state: absent
+
+- name: Remove sops
+  file:
+    path: /usr/local/bin/sops
+    state: absent
+
+- name: Install an application
+  ansible.builtin.apt:
+    pkg:
+      - task
+      - sops
+    state: latest
+    update_cache: true
+
+# - name: Download reprepro key
+#   get_url:
+#     url: http://deb.l.nicholaswilde.io/public.gpg.key
+#     dest: /etc/apt/trusted.gpg.d/reprepro.asc
+#       
+# - name: Setup reprepro source
+#   copy:
+#     src: reprepro.list
+#     dest: "/etc/apt/sources.list.d/reprepro.list"
+# 
+# - name: Update apt package list
+#   apt:
+#     update_cache: yes

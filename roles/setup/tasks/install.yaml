@@ -4,13 +4,16 @@
     src: 00aptproxy
     dest: "/etc/apt/apt.conf.d/00aptproxy"
 
+- name: Update apt package list
+  apt:
+    update_cache: yes
+
 - name: Install apt packages
   ansible.builtin.apt:
     pkg:
       - git
       - gpg
       - autofs
-      - pipx
       - ipcalc
       - net-tools
       - micro
@@ -18,5 +21,7 @@
       - gh
       - screen
       - dnsutils
+      - task
+      - sops
     state: latest
     update_cache: true

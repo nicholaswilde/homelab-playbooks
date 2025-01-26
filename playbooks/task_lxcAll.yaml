@@ -1,0 +1,6 @@
+---
+- hosts:
+    - lxcHosts
+  become: true
+  roles:
+    - test

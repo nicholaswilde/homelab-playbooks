@@ -1,0 +1,10 @@
+---
+- name: Download reprepro key
+  get_url:
+    url: http://deb.l.nicholaswilde.io/public.gpg.key
+    dest: /etc/apt/trusted.gpg.d/reprepro.asc
+      
+- name: Setup reprepro source
+  copy:
+    src: reprepro.list
+    dest: "/etc/apt/sources.list.d/reprepro.list"
