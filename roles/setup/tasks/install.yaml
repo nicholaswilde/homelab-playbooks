@@ -1,12 +1,12 @@
 ---
 - name: Setup apt-cacher-ng source
-  copy:
+  ansible.builtin.copy:
     src: 00aptproxy
     dest: "/etc/apt/apt.conf.d/00aptproxy"
 
 - name: Update apt package list
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
 
 - name: Install apt packages
   ansible.builtin.apt:

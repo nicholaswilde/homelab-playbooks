@@ -1,5 +1,5 @@
 ---
-lxcHosts:
+lxcAll:
   vars:
     ansible_user: root
   hosts:

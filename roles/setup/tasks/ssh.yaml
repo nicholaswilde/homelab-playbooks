@@ -5,10 +5,10 @@
     state: present
     key: https://github.com/nicholaswilde.keys
 
-- name: ensure private key is present
-  copy:
+- name: Ensure private key is present
+  ansible.builtin.copy:
     src: /home/nicholas/.ssh/id_rsa
-    dest: '/root/.ssh/id_rsa'
-    mode: 0600
+    dest: "/root/.ssh/id_rsa"
+    mode: "0600"
     owner: root
     group: root

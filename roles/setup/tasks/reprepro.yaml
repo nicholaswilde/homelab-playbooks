@@ -1,10 +1,10 @@
 ---
 - name: Download reprepro key
-  get_url:
+  ansible.builtin.get_url:
     url: http://deb.l.nicholaswilde.io/public.gpg.key
     dest: /etc/apt/trusted.gpg.d/reprepro.asc
-      
+
 - name: Setup reprepro source
-  copy:
+  ansible.builtin.copy:
     src: reprepro.list
     dest: "/etc/apt/sources.list.d/reprepro.list"

@@ -1,5 +1,6 @@
 ---
-- hosts:
+- name: Setup LXC single
+  hosts:
     - lxcSingle
   become: true
   roles:

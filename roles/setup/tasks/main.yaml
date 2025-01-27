@@ -1,15 +1,15 @@
 ---
 - name: Get user variables
-  user:
+  ansible.builtin.user:
     name: root
     state: present
   register: user
 
-- include_tasks: reprepro.yaml
-- include_tasks: install.yaml
-- include_tasks: beszel.yaml
-- include_tasks: autofs.yaml
-- include_tasks: ssh.yaml
-- include_tasks: git.yaml
-- include_tasks: gpg.yaml
-- include_tasks: bash.yaml
+- ansible.builtin.include_tasks: reprepro.yaml
+- ansible.builtin.include_tasks: install.yaml
+- ansible.builtin.include_tasks: beszel.yaml
+- ansible.builtin.include_tasks: autofs.yaml
+- ansible.builtin.include_tasks: ssh.yaml
+- ansible.builtin.include_tasks: git.yaml
+- ansible.builtin.include_tasks: gpg.yaml
+- ansible.builtin.include_tasks: bash.yaml

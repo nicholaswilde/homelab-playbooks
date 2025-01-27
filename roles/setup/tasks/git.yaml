@@ -1,23 +1,23 @@
 ---
-- name: git user.email
+- name: Git user.email
   git_config:
     name: user.email
     scope: global
     value: ncwilde43@gmail.com
 
-- name: git user.name
+- name: Git user.name
   git_config:
     name: user.name
     scope: global
     value: "nιcнolaѕ wιlde"
 
-- name: git init.defaultBranch
+- name: Git init.defaultBranch
   git_config:
     name: init.defaultBranch
     scope: global
     value: main
 
-- name: git init.rebase
+- name: Git init.rebase
   git_config:
     name: init.defaultBranch
     scope: global
@@ -25,6 +25,6 @@
 
 - name: Create git folders
   ansible.builtin.file:
-    path: '{{ user.home }}/{{ git_folder }}'
+    path: "{{ user.home }}/{{ setup_git_folder }}"
     state: directory
     recurse: true

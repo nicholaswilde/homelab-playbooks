@@ -1,5 +1,5 @@
 ---
-git_folder: git/nicholaswilde
-gpg_files:
+setup_git_folder: git/nicholaswilde
+setup_gpg_files:
   public: public.pgp
   private: private.pgp

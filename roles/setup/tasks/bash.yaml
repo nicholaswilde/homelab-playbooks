@@ -1,26 +1,26 @@
 ---
-- name: change user shell to bash
-  user:
+- name: Change user shell to bash
+  ansible.builtin.user:
     name: root
     shell: /bin/bash
 
 - name: Update .bash_aliases
-  copy:
+  ansible.builtin.copy:
     src: .bash_aliases
     dest: "{{ user.home }}/.bash_aliases"
 
 - name: Update .bashrc
-  copy:
+  ansible.builtin.copy:
     src: .bashrc
     dest: "{{ user.home }}/.bashrc"
 
 - name: Replace old hostname with new hostname (requires Ansible >= 2.4)
   ansible.builtin.replace:
     path: /root/.bashrc
-    regexp: 'xterm-color\) color_prompt=yes;;$'
-    replace: 'xterm-color|xterm-256color) color_prompt=yes;;'
+    regexp: "xterm-color\\) color_prompt=yes;;$"
+    replace: "xterm-color|xterm-256color) color_prompt=yes;;"
 
-- name: source bashrc
-  shell: source /root/.bashrc
+- name: Source bashrc
+  ansible.builtin.shell: source /root/.bashrc
   args:
     executable: /bin/bash

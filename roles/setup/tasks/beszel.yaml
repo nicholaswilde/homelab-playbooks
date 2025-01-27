@@ -10,12 +10,12 @@
     dest: /etc/systemd/system/beszel-agent.service
 
 - name: Setup update service
-  copy:
+  ansible.builtin.copy:
     src: beszel-agent-update.service
     dest: "/etc/systemd/system/beszel-agent-update.service"
 
 - name: Setup timer
-  copy:
+  ansible.builtin.copy:
     src: beszel-agent-update.timer
     dest: "/etc/systemd/system/beszel-agent-update.timer"
 
@@ -27,4 +27,4 @@
     state: started
 
 - name: Enable beszel-agent-update.timer
-  ansible.builtin.shell: "systemctl enable --now beszel-agent-update.timer"
+  ansible.builtin.command: "systemctl enable --now beszel-agent-update.timer"
