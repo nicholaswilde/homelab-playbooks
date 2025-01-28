@@ -1,7 +1,7 @@
 ---
-- name: Update all Ubuntu hosts
+- name: Update all LXC containers
   hosts:
-    - ubuntu
+    - lxcAll
   become: true
 
   roles:

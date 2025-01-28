@@ -1,5 +1,6 @@
 ---
-- hosts:
+- name: Update a single LXC container
+  hosts:
     - lxcSingle
   become: true
 

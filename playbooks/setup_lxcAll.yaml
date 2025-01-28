@@ -1,6 +1,8 @@
 ---
-- hosts:
+- name: Setup LXC all
+  hosts:
     - lxcAll
   become: true
+
   roles:
     - setup

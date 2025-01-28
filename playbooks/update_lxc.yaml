@@ -1,7 +1,0 @@
----
-- hosts:
-    - lxcHosts
-  become: true
-
-  roles:
-    - update

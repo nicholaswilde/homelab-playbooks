@@ -1,5 +1,6 @@
 ---
-- hosts:
+- name: Update all Raspberry Pis
+  hosts:
     - rpis
   become: true
 

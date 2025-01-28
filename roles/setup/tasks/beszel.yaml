@@ -1,6 +1,6 @@
 ---
 - name: Install beszel-agent
-  ansible.builtin.shell: "curl -s https://installer.l.nicholaswilde.io/henrygd/beszel?as=beszel-agent | bash"
+  ansible.builtin.shell: "curl -s https://installer.l.nicholaswilde.io/henrygd/beszel?as=beszel-agent | bash" # noqa: command-instead-of-module
   args:
     chdir: "/usr/local/bin"
 
@@ -26,5 +26,11 @@
     enabled: true
     state: started
 
+# - name: Enable beszel-agent-update.timer
+#   ansible.builtin.command: "systemctl enable --now beszel-agent-update.timer"  # noqa: command-instead-of-module
+
 - name: Enable beszel-agent-update.timer
-  ansible.builtin.command: "systemctl enable --now beszel-agent-update.timer"
+  ansible.builtin.systemd_service:
+    name: beszel-agent-update.timer
+    state: started
+    enabled: true

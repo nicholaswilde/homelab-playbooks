@@ -5,11 +5,26 @@
     state: present
   register: user
 
-- ansible.builtin.include_tasks: reprepro.yaml
-- ansible.builtin.include_tasks: install.yaml
-- ansible.builtin.include_tasks: beszel.yaml
-- ansible.builtin.include_tasks: autofs.yaml
-- ansible.builtin.include_tasks: ssh.yaml
-- ansible.builtin.include_tasks: git.yaml
-- ansible.builtin.include_tasks: gpg.yaml
-- ansible.builtin.include_tasks: bash.yaml
+- name: Setup reprepro
+  ansible.builtin.include_tasks: reprepro.yaml
+
+- name: Install stuff
+  ansible.builtin.include_tasks: install.yaml
+
+- name: Setup beszel
+  ansible.builtin.include_tasks: beszel.yaml
+
+- name: Setup autofs
+  ansible.builtin.include_tasks: autofs.yaml
+
+- name: Setup SSH
+  ansible.builtin.include_tasks: ssh.yaml
+
+- name: Setup git
+  ansible.builtin.include_tasks: git.yaml
+
+- name: Setup GPG
+  ansible.builtin.include_tasks: gpg.yaml
+
+- name: Setup bash
+  ansible.builtin.include_tasks: bash.yaml
