@@ -51,3 +51,5 @@ lxcAll:
       ansible_host: 192.168.2.35
     reprepro:
       ansible_host: 192.168.2.32
+    it-tools:
+      ansible_host: 192.168.2.52
