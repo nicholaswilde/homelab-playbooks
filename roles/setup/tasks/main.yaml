@@ -14,9 +14,6 @@
 - name: Setup beszel
   ansible.builtin.include_tasks: beszel.yaml
 
-- name: Setup autofs
-  ansible.builtin.include_tasks: autofs.yaml
-
 - name: Setup SSH
   ansible.builtin.include_tasks: ssh.yaml
 
@@ -28,3 +25,6 @@
 
 - name: Setup bash
   ansible.builtin.include_tasks: bash.yaml
+
+- name: Setup autofs
+  ansible.builtin.include_tasks: autofs.yaml
