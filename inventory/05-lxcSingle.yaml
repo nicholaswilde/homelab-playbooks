@@ -3,5 +3,5 @@ lxcSingle:
   vars:
     ansible_user: root
   hosts:
-    watchyourlan:
-      ansible_host: 192.168.2.53
+    test-debian-lxc:
+      ansible_host: 192.168.2.71

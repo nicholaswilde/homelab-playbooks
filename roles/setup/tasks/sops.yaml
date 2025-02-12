@@ -1,0 +1,5 @@
+---
+- name: Copy age keys
+  ansible.builtin.copy:
+    src: "/home/nicholas/.config/sops/age/"
+    dest: "/root/.config/sops/age/"

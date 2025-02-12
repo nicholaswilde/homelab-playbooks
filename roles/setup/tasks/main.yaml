@@ -11,6 +11,9 @@
 - name: Install stuff
   ansible.builtin.include_tasks: install.yaml
 
+- name: Setup SOPS
+  ansible.builtin.include_tasks: sops.yaml
+  
 - name: Setup beszel
   ansible.builtin.include_tasks: beszel.yaml
 
@@ -26,5 +29,8 @@
 - name: Setup bash
   ansible.builtin.include_tasks: bash.yaml
 
+- name: Setup ChromeOS script
+  ansible.builtin.include_tasks: chromeos.yaml
+  
 - name: Setup autofs
   ansible.builtin.include_tasks: autofs.yaml
