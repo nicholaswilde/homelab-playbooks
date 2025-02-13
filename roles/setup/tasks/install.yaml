@@ -23,5 +23,6 @@
       - dnsutils
       - task
       - sops
+      - jq
     state: latest
     update_cache: true
