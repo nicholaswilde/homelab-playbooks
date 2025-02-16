@@ -1,5 +1,5 @@
 ---
-setup_git_folder: git/nicholaswilde
+setup_git_folder: git/nicholaswilde/homelab
 setup_gpg_files:
   public: public.pgp
   private: private.pgp

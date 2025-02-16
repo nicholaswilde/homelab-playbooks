@@ -2,7 +2,7 @@
 version: '3'
 
 vars:
-  VAULT_PATH: ./roles/setup/vars/main.yaml
+  VAULT_PATH: ./inventory/group_vars/all.yaml
 
 tasks:
   bootstrap:
