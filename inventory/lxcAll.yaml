@@ -22,7 +22,7 @@ lxcAll:
     qbittorrent:
       ansible_host: 192.168.2.57
     changedetection:
-      ansible_host: 192.168.2.162
+      ansible_host: 192.168.2.83
     influxdb:
       ansible_host: 192.168.2.15
     aptcacher:
@@ -57,3 +57,5 @@ lxcAll:
       ansible_host: 192.168.2.53
     ventoy:
       ansible_host: 192.168.2.70
+    cheatsh:
+      ansible_host: 192.168.2.82
