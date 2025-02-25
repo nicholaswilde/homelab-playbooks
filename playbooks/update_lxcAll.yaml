@@ -5,4 +5,5 @@
   become: true
 
   roles:
-    - update_apt
+    # - update_apt
+    - update_git

@@ -1,0 +1,6 @@
+---
+- name: git checkout
+  ansible.builtin.git:
+    repo: git@github.com:nicholaswilde/homelab.git
+    dest: "{{ user.home }}/{{ setup_git_folder }}"
+    accept_hostkey: true

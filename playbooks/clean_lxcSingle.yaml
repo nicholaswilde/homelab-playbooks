@@ -1,0 +1,8 @@
+---
+- name: Clean a single LXC container
+  hosts:
+    - lxcSingle
+  become: true
+
+  roles:
+    - clean

@@ -31,6 +31,12 @@
 
 - name: Setup ChromeOS script
   ansible.builtin.include_tasks: chromeos.yaml
+
+- name: Setup micro
+  ansible.builtin.include_tasks: micro.yaml
+
+- name: Setup tmux
+  ansible.builtin.include_tasks: tmux.yaml
   
 - name: Setup autofs
   ansible.builtin.include_tasks: autofs.yaml

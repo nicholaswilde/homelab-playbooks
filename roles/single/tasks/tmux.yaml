@@ -1,0 +1,39 @@
+---
+- name: Update apt package list
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install apt packages
+  ansible.builtin.apt:
+    pkg:
+      - git
+      - tmux
+
+- name: Download dotfiles
+  ansible.builtin.git:
+    repo: 'https://github.com/nicholaswilde/dotfiles2.git'
+    dest: '/tmp/dotfiles'
+  
+- name: Create .config directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config"
+    state: directory
+
+- name: Copy tmux to config directory
+  ansible.builtin.copy:
+    src: "/tmp/dotfiles/.config/tmux"
+    dest: "{{ ansible_env.HOME }}/.config"
+    remote_src: true
+
+- name: Create tpm directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+    state: directory
+
+- name: Install tmux plugins manager (tpm)
+  ansible.builtin.git:
+    repo: 'https://github.com/tmux-plugins/tpm'
+    dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+
+- name: Install tmux plugins
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.tmux/plugins/tpm/bin/install_plugins"

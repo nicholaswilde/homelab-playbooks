@@ -1,0 +1,9 @@
+---
+- name: Get user variables
+  ansible.builtin.user:
+    name: root
+    state: present
+  register: user
+
+- name: Update git repo
+  ansible.builtin.include_tasks: git.yaml

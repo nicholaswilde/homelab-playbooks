@@ -24,5 +24,6 @@
       - task
       - sops
       - jq
+      - tmux
     state: latest
     update_cache: true
