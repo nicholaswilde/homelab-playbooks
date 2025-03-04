@@ -1,0 +1,8 @@
+---
+- name: Update all Proxmox nodes
+  hosts:
+    - pves
+  become: true
+
+  roles:
+    - update_apt
