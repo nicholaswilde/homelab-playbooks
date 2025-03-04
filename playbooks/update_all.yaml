@@ -1,0 +1,10 @@
+---
+- name: Update all containers
+  hosts:
+    - lxcAll
+    - docker
+  become: true
+
+  roles:
+    - update_apt
+    - update_git

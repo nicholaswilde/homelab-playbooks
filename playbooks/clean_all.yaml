@@ -1,0 +1,9 @@
+---
+- name: Clean all containers
+  hosts:
+    - lxcAll
+    - docker
+  become: true
+
+  roles:
+    - clean

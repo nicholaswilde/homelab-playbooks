@@ -76,7 +76,8 @@
   ansible.builtin.apt:
     update_cache: true
 
-- set_fact:
+- name: Get mount
+  ansible.builtin.set_fact:
     mount: "{{ ansible_mounts | first }}"
 
 - set_fact: disk_usage="{{ mount.size_total - mount.size_available }}"

@@ -1,0 +1,10 @@
+---
+- name: Setup Docker daemon.json
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: "/etc/docker/daemon.json"
+
+- name: Restart service docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted

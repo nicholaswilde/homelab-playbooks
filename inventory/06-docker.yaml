@@ -1,0 +1,15 @@
+---
+docker:
+  vars:
+    ansible_user: root
+  hosts:
+    immich:
+      ansible_host: 192.168.2.27
+    mailrise:
+      ansible_host: 192.168.2.62
+    netbootxyz:
+      ansible_host: 192.168.2.222
+    it-tools:
+      ansible_host: 192.168.2.52
+    registry:
+      ansible_host: 192.168.2.81

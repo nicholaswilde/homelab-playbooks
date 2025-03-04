@@ -5,4 +5,6 @@
   become: true
 
   roles:
-    - single
+    - role: single
+      when: "'docker' in hostvars[inventory_hostname]['tags']"
+      ignore_errors: true
