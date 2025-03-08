@@ -3,5 +3,5 @@ lxcSingle:
   vars:
     ansible_user: root
   hosts:
-    immich:
-      ansible_host: 192.168.2.27
+    kestra:
+      ansible_host: 192.168.2.93

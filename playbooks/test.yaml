@@ -1,7 +1,15 @@
 ---
-- hosts:
-    - lxcSingle
-  become: true
-
-  roles:
-    - test
+# - hosts:
+#     - lxcSingle
+#   become: true
+# 
+#   roles:
+#     - test
+- name: Create rewrite
+  sdorra.adguard.adguard_rewrite:
+    state: present
+    servers:
+      - url: http://adguard01.l.nicholaswilde.io
+    rewrites:
+      - domain: example.com
+        answer: 192.168.1.42
