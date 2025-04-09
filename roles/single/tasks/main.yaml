@@ -6,5 +6,5 @@
     state: present
   register: user
 
-- name: Setup Docker
-  ansible.builtin.include_tasks: docker.yaml
+- name: Setup Cheat
+  ansible.builtin.include_tasks: cheat.yaml
