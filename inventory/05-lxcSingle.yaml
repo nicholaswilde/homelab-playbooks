@@ -3,5 +3,5 @@ lxcSingle:
   vars:
     ansible_user: root
   hosts:
-    kestra:
-      ansible_host: 192.168.2.93
+    cheatsh:
+      ansible_host: 192.168.2.103

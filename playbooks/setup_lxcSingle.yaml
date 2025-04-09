@@ -2,6 +2,8 @@
 - name: Setup LXC single
   hosts:
     - lxcSingle
+    # deepseek:
+      # ansible_host: 192.168.2.94
   become: true
   roles:
     - setup

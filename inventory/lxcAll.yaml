@@ -59,3 +59,5 @@ lxcAll:
       ansible_host: 192.168.2.93
     shlink:
       ansible_host: 192.168.2.92
+    wallos:
+      ansible_host: 192.168.2.95
