@@ -1,0 +1,105 @@
+---
+- name: Install cheat binary from GitHub releases
+  hosts: all # Or specify your target host group
+  become: true # Required to install in /usr/local/bin and set permissions
+
+  vars:
+    cheat_install_dir: "/usr/local/bin"
+    cheat_binary_name: "cheat"
+    cheat_base_url: "https://github.com/cheat/cheat/releases/latest/download"
+    # Define architecture mapping from Ansible facts to cheat release naming
+    arch_mapping:
+      x86_64: "amd64"
+      aarch64: "arm64"
+      armv7l: "armv7" # Added for completeness, adjust if needed
+
+  tasks:
+    - name: Gather architecture fact if not already done
+      ansible.builtin.setup:
+        filter:
+          - ansible_architecture
+      when: ansible_architecture is not defined
+
+    - name: Determine target architecture for cheat binary
+      ansible.builtin.set_fact:
+        cheat_arch: "{{ arch_mapping[ansible_architecture] | default(None) }}"
+      when: ansible_architecture is defined
+
+    - name: Fail if architecture is unsupported
+      ansible.builtin.fail:
+        msg: "Unsupported architecture: {{ ansible_architecture }}. Only {{ arch_mapping.keys() | list }} are supported by this playbook."
+      when: cheat_arch is none
+
+    - name: Define platform-specific variables
+      ansible.builtin.set_fact:
+        # Example: cheat-linux-amd64.gz
+        cheat_archive_name: "cheat-linux-{{ cheat_arch }}.gz"
+        cheat_download_url: "{{ cheat_base_url }}/cheat-linux-{{ cheat_arch }}.gz"
+        cheat_dest_path: "{{ cheat_install_dir }}/{{ cheat_binary_name }}"
+        cheat_tmp_download_path: "/tmp/{{ cheat_archive_name }}" # Temporary download location
+        cheat_tmp_unarchive_path: "/tmp/cheat-{{ cheat_arch }}-unpacked" # Temporary location for unarchived binary
+
+    - name: Check if cheat is already installed
+      ansible.builtin.stat:
+        path: "{{ cheat_dest_path }}"
+      register: cheat_binary_stat
+
+    # --- Installation Block ---
+    - name: Install cheat binary block
+      when: not cheat_binary_stat.stat.exists # Only run if cheat is not already present
+      block:
+        - name: Ensure temporary unpack directory exists
+          ansible.builtin.file:
+            path: "{{ cheat_tmp_unarchive_path }}"
+            state: directory
+            mode: '0755'
+
+        - name: Download cheat binary archive for {{ cheat_arch }}
+          ansible.builtin.get_url:
+            url: "{{ cheat_download_url }}"
+            dest: "{{ cheat_tmp_download_path }}"
+            mode: '0644'
+          register: download_result
+
+        - name: Unarchive cheat binary
+          ansible.builtin.unarchive:
+            src: "{{ cheat_tmp_download_path }}"
+            dest: "{{ cheat_tmp_unarchive_path }}" # Extract inside the temp dir
+            remote_src: true # Indicates the src is on the remote host
+            creates: "{{ cheat_tmp_unarchive_path }}/cheat" # Check if the file exists after unarchiving (helps idempotency)
+          when: download_result is succeeded # Only unarchive if download worked
+
+        - name: Move cheat binary to installation directory
+          ansible.builtin.copy:
+            src: "{{ cheat_tmp_unarchive_path }}/cheat" # The actual binary name inside the archive
+            dest: "{{ cheat_dest_path }}"
+            owner: root
+            group: root
+            mode: '0755'
+            remote_src: true # Needed as the source is on the remote machine
+          when: download_result is succeeded
+
+        - name: Clean up downloaded archive
+          ansible.builtin.file:
+            path: "{{ cheat_tmp_download_path }}"
+            state: absent
+          when: download_result is succeeded # Clean up only if download happened
+
+        - name: Clean up temporary unpack directory
+          ansible.builtin.file:
+            path: "{{ cheat_tmp_unarchive_path }}"
+            state: absent
+          when: download_result is succeeded # Clean up only if download happened
+    # --- End Installation Block ---
+
+    - name: Verify cheat installation (optional)
+      ansible.builtin.command: "{{ cheat_dest_path }} --version"
+      register: cheat_version_check
+      changed_when: false # This command doesn't change state
+      failed_when: cheat_version_check.rc != 0
+      when: not cheat_binary_stat.stat.exists # Only verify if we just installed it
+
+    - name: Display cheat version (optional)
+      ansible.builtin.debug:
+        msg: "Cheat version installed: {{ cheat_version_check.stdout }}"
+      when: cheat_version_check is defined and cheat_version_check.stdout is defined
