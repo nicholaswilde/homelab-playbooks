@@ -3,5 +3,5 @@ lxcSingle:
   vars:
     ansible_user: root
   hosts:
-    cheatsh:
-      ansible_host: 192.168.2.103
+    test:
+      ansible_host: 192.168.2.105
