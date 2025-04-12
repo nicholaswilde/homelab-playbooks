@@ -1,0 +1,171 @@
+---
+- name: Update Proxmox LXC Template
+  hosts: your_proxmox_host # Replace with your Proxmox host's inventory name
+  gather_facts: false # Usually not needed for Proxmox API tasks
+
+  # --- Variables ---
+  # Define these variables directly, in inventory, or using --extra-vars
+  vars:
+    pve_node: "pve" # The name of your Proxmox node
+    pve_api_host: "your-proxmox-ip-or-hostname" # IP or Hostname of Proxmox API
+    pve_api_user: "root@pam" # Or your API user like ansible@pve!mytokenid
+    # pve_api_password: "your_password" # Use this OR token_secret. Use Ansible Vault!
+    pve_api_token_id: "ansible@pve!mytokenid" # Use this OR password. Example format.
+    pve_api_token_secret: "YOUR_API_TOKEN_SECRET" # Use Ansible Vault for this!
+    pve_validate_certs: false # Set to true if using valid, trusted SSL certs
+
+    source_template_storage: "local-lvm" # Storage where the source template resides
+    source_template_name: "debian-11-standard_11.0-1_amd64.tar.gz" # Full name of the template volid
+    # Example: For template named 'ubuntu-2204-template' on 'local' storage,
+    # the volid might be 'local:vztmpl/ubuntu-2204-template.tar.gz'
+    # Find the exact name in the Proxmox GUI under Storage -> Templates
+
+    temp_vmid: 9000 # Choose a VMID for the temporary container (ensure it's unused)
+    temp_hostname: "template-update-temp"
+    temp_storage: "local-lvm" # Storage for the temporary container's disk
+    temp_cores: 1
+    temp_memory: 512 # In MB
+    temp_disk_size: 8 # In GB
+    temp_network_bridge: "vmbr0" # Network bridge for the container
+
+    # --- New Template Details ---
+    # The *new* template will be created on the same storage as the temp container
+    # Proxmox automatically names the new template file based on the source OS/distro info
+    # found inside the container *after* the update. You might need to rename it manually
+    # or via shell commands later if you need a specific naming convention different
+    # from what Proxmox generates.
+
+    # --- Optional: Old Template Deletion ---
+    delete_old_template: false # Set to true to delete the original source template after success
+
+  # --- Tasks ---
+  tasks:
+    - name: Fail early if secrets are not provided securely
+      ansible.builtin.fail:
+        msg: "API password or token secret should be set via Ansible Vault or other secure means, not directly in the playbook."
+      when: (pve_api_password is defined and pve_api_password != "") or (pve_api_token_secret is defined and pve_api_token_secret != "YOUR_API_TOKEN_SECRET")
+      # Note: This check is basic. Adapt if you use different variable names or methods.
+
+    - name: 1. Create temporary container from source template
+      community.general.proxmox:
+        api_host: "{{ pve_api_host }}"
+        api_user: "{{ pve_api_user }}"
+        api_password: "{{ pve_api_password | default(omit) }}"
+        api_token_id: "{{ pve_api_token_id | default(omit) }}"
+        api_token_secret: "{{ pve_api_token_secret | default(omit) }}"
+        validate_certs: "{{ pve_validate_certs }}"
+        node: "{{ pve_node }}"
+        vmid: "{{ temp_vmid }}"
+        hostname: "{{ temp_hostname }}"
+        state: present
+        cores: "{{ temp_cores }}"
+        memory: "{{ temp_memory }}"
+        netif: '{"net0":"name=eth0,bridge={{ temp_network_bridge }},ip=dhcp"}'
+        storage: "{{ temp_storage }}"
+        disk: "{{ temp_disk_size }}"
+        # Reference the source template correctly: <storage>:<template_volid>
+        ostemplate: "{{ source_template_storage }}:vztmpl/{{ source_template_name }}"
+        # ostype: # Usually inferred from template, but specify if needed (e.g., 'ubuntu', 'debian')
+      register: create_container_result
+
+    - name: Wait a moment for container setup
+      ansible.builtin.pause:
+        seconds: 5
+
+    - name: 2. Start the temporary container
+      community.general.proxmox:
+        api_host: "{{ pve_api_host }}"
+        api_user: "{{ pve_api_user }}"
+        api_password: "{{ pve_api_password | default(omit) }}"
+        api_token_id: "{{ pve_api_token_id | default(omit) }}"
+        api_token_secret: "{{ pve_api_token_secret | default(omit) }}"
+        validate_certs: "{{ pve_validate_certs }}"
+        node: "{{ pve_node }}"
+        vmid: "{{ temp_vmid }}"
+        state: started
+        timeout: 60 # Wait up to 60 seconds for start
+      register: start_result
+      until: start_result is not failed
+      retries: 3
+      delay: 10
+
+    - name: Wait for container to boot and potentially get network
+      ansible.builtin.pause:
+        minutes: 1 # Adjust as needed depending on container boot speed and network
+
+    - name: 3. Update package list inside container (apt update)
+      ansible.builtin.command: "pct exec {{ temp_vmid }} -- apt-get update -y"
+      register: apt_update_result
+      changed_when: "'packages can be upgraded' in apt_update_result.stdout or 'New release' in apt_update_result.stdout" # Be more specific if needed
+      failed_when: apt_update_result.rc != 0
+
+    - name: 4. Upgrade packages inside container (apt upgrade)
+      ansible.builtin.command: "pct exec {{ temp_vmid }} -- env DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y --autoremove"
+      register: apt_upgrade_result
+      changed_when: "'0 upgraded, 0 newly installed' not in apt_upgrade_result.stdout"
+      failed_when: apt_upgrade_result.rc != 0
+      async: 600 # Allow up to 10 minutes for upgrades
+      poll: 10
+
+    - name: 5. Clean up apt cache inside container
+      ansible.builtin.command: "pct exec {{ temp_vmid }} -- apt-get clean"
+      changed_when: false # This command doesn't typically report change state well
+      failed_when: false # Usually safe to ignore failure here
+
+    # Add any other customization/cleanup commands here using 'pct exec'
+
+    - name: 6. Stop the temporary container
+      community.general.proxmox:
+        api_host: "{{ pve_api_host }}"
+        api_user: "{{ pve_api_user }}"
+        api_password: "{{ pve_api_password | default(omit) }}"
+        api_token_id: "{{ pve_api_token_id | default(omit) }}"
+        api_token_secret: "{{ pve_api_token_secret | default(omit) }}"
+        validate_certs: "{{ pve_validate_certs }}"
+        node: "{{ pve_node }}"
+        vmid: "{{ temp_vmid }}"
+        state: stopped
+        timeout: 120 # Wait up to 120 seconds for stop
+
+    - name: 7. Convert updated container to a new template
+      community.general.proxmox_template:
+        api_host: "{{ pve_api_host }}"
+        api_user: "{{ pve_api_user }}"
+        api_password: "{{ pve_api_password | default(omit) }}"
+        api_token_id: "{{ pve_api_token_id | default(omit) }}"
+        api_token_secret: "{{ pve_api_token_secret | default(omit) }}"
+        validate_certs: "{{ pve_validate_certs }}"
+        node: "{{ pve_node }}"
+        vmid: "{{ temp_vmid }}"
+        # 'template_name' is not directly supported; Proxmox names it automatically.
+        # This action *destroys* the source container (vmid: {{ temp_vmid }})
+      register: template_creation_result
+      async: 600 # Templating can take time
+      poll: 15
+
+    # Optional Block: Delete the *original* source template
+    - name: 8. (Optional) Delete the old source template
+      when: delete_old_template | bool
+      block:
+        - name: Display warning before deleting old template
+          ansible.builtin.debug:
+            msg: "WARNING: Deleting original template '{{ source_template_storage }}:vztmpl/{{ source_template_name }}' because delete_old_template is true."
+
+        - name: Delete old template volume using pvesm (adjust command if needed)
+          ansible.builtin.command: "pvesm free {{ source_template_storage }} -vmid {{ temp_vmid }} --content vztmpl --volid {{ source_template_storage }}:vztmpl/{{ source_template_name }}"
+          # Alternative using proxmox_template module if it supports deletion reliably:
+          # community.general.proxmox_template:
+          #   api_host: "{{ pve_api_host }}"
+          #   api_user: "{{ pve_api_user }}"
+          #   ... (auth details) ...
+          #   node: "{{ pve_node }}"
+          #   storage: "{{ source_template_storage }}"
+          #   template: "{{ source_template_name }}" # Just the filename part
+          #   state: absent
+          register: delete_result
+          changed_when: "'successfully freed' in delete_result.stdout" # Adjust based on actual pvesm output
+          failed_when: delete_result.rc != 0
+
+        - name: Show deletion result
+          ansible.builtin.debug:
+            var: delete_result.stdout_lines
