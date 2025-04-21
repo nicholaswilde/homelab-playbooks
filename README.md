@@ -57,5 +57,5 @@ ansible_password: baz
 [2]: <https://docs.ansible.com/ansible/latest/vault_guide/vault.html>
 [3]: <https://nicholaswilde.io/homelab>
 [4]: <https://github.com/nicholaswilde/homelab-pull>
-[5]  <https://www.youtube.com/watch?v=sn1HQq_GFNE>
+[5]: <https://www.youtube.com/watch?v=sn1HQq_GFNE>
 [6]: <https://fluxcd.io/>
