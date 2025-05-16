@@ -51,12 +51,8 @@ lxcAll:
       ansible_host: 192.168.2.70
     wireguard:
       ansible_host: 192.168.2.87
-    semaphore:
-      ansible_host: 192.168.2.90
     excalidraw:
       ansible_host: 192.168.2.91
-    kestra:
-      ansible_host: 192.168.2.93
     shlink:
       ansible_host: 192.168.2.92
     wallos:
