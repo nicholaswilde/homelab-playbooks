@@ -1,0 +1,27 @@
+---
+plugin: community.proxmox.proxmox
+url: https://pve01.l.nicholaswilde.io
+validate_certs: false
+
+user: root@pam
+token_id: ansible
+token_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34343561623237306230326263656631613638376532353531373661363561633863626163656265
+          3431623163613064353535376533353461313937316130310a633533383766346331336365633465
+          37373533613462633231303665353432666330326136363830366464303037353466373535616366
+          6631356636333262330a346131376631333839376139656233363335336466653033393762633164
+          34396166633431633531626137303934306161636139356664373337313831393839303930356663
+          3066316466353662376131326266626663613463393132383761
+
+# This tells the plugin to get IPs for LXC containers
+want_proxmox_lxc_interfaces: true
+
+# This creates a group 'lxc' with all your LXC containers
+groups:
+  lxc: "type == 'lxc'"
+
+# This sets the 'ansible_host' variable to the container's IP
+# It finds the first IPv4 address on the 'net0' interface
+compose:
+  ansible_host: "proxmox_lxc_interfaces.net0.ipv4.address"
