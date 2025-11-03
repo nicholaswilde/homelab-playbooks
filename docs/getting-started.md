@@ -38,8 +38,10 @@ task encrypt
 ## :mag: &nbsp; Dynamic Proxmox Inventory
 
 This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventor
-y/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve in
+y/arm64.proxmox.yaml` use the [`community.proxmox.proxmox`][1] plugin to connect to a Proxmox VE instance and retrieve in
 formation about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible
 _host` variable is automatically set to the container's IP address.
 
 ## :link: References
+
+[1]: <https://docs.ansible.com/ansible/latest/collections/community/proxmox/proxmox_inventory.html>
