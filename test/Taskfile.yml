@@ -1,0 +1,12 @@
+---
+version: '3'
+
+tasks:
+  run:
+    desc: Run the test container
+    cmds:
+      - ./setup-container.sh
+  default:
+    cmds:
+      - task -l
+    silent: true

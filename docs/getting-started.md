@@ -1,10 +1,14 @@
 # :rocket: Getting Started
 
-## :key: Password File
+## :package: Install dependencies
 
-A password file is used by ansible vault to encrypt passwords.
+=== "Task"
 
-### Generate a new password
+    ```bash
+    task deps
+    ```
+    
+## Generate a new password
 
 To create a new vault password file, use the `task init` command:
 
@@ -23,24 +27,37 @@ To create a new vault password file, use the `task init` command:
 
 This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.
 
-To decrypt the `.vault_pass.enc` file, use the `task decrypt` command:
+## Edit secrets
 
-```bash
-task decrypt
-```
+=== "Task"
 
-To encrypt the `.vault_pass` file, use the `task encrypt` command:
+    ```bash
+    task ve
+    ```
 
-```bash
-task encrypt
-```
+=== "Manual"
 
-## :mag: &nbsp; Dynamic Proxmox Inventory
+    ```bash
+    ansible-vault edit "./inventory/group_vars/all.yaml"
+    ```
+
+!!! example "./inventory/group_vars/all.yaml"
+
+    ```yaml
+    ---
+    ansible_password: foo
+    ansible_become_password: bar
+    ...
+    ```
+
+## :mag: Dynamic Proxmox Inventory
 
 This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventor
 y/arm64.proxmox.yaml` use the [`community.proxmox.proxmox`][1] plugin to connect to a Proxmox VE instance and retrieve in
 formation about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible
 _host` variable is automatically set to the container's IP address.
+
+Set the variables for the dynamic Proxmox inventory. See [configuration](./configuration.md).
 
 ??? abstract "inventory/amd64.proxmox.yaml"
 

@@ -8,6 +8,7 @@ want_facts: true
 user: root@pam
 token_id: ansible
 
+# --8<-- [start:token_secret]
 # password file .vault_pass
 token_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -17,6 +18,7 @@ token_secret: !vault |
           3939643133346134300a393136636137326431303965353537386665323766313464666331333337
           62326331663361376632393331396439383666333739323766316432393761666561356266643938
           3165353364633639326632336539313466343531363431373465
+# --8<-- [end:token_secret]
 
 # This tells the plugin to get IPs for LXC containers
 # want_proxmox_lxc_interfaces: true
