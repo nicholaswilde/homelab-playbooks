@@ -4,8 +4,43 @@ version: '3'
 vars:
   VAULT_PATH: ./inventory/group_vars/all.yaml
   VER: '2.5'
-
+  PORT: 8000
+  IMAGE: nicholaswilde/mkdocs-material
 tasks:
+  deps:
+    desc: Install dependencies
+    preconditions:
+      - test -f requirements.yaml
+    cmds:
+      - sudo apt install -y pipx && pipx ensurepath
+      - pipx upgrade-all
+      - ansible-galaxy role install -r requirements.yaml
+      - ansible-galaxy collection install -r requirements.yaml
+
+  docs-deps:
+    desc: Install mkdocs-material and pymdown-extensions
+    cmds:
+      - pipx uninstall mkdocs || true
+      - pipx uninstall mkdocs-material || true
+      - pipx uninstall pymdown-extensions || true
+      - pipx install mkdocs
+      - pipx install mkdocs-material
+      - pipx install pymdown-extensions
+
+  docs-deploy:
+    desc: Deploy docs to GitHub Pages
+    cmds:
+      - pipx run --spec mkdocs mkdocs gh-deploy --force
+
+  serve:
+    desc: >-
+      Start development server on http://0.0.0.0:{{ .PORT }} using
+      Docker and mkdocs-material
+    cmds:
+      - >-
+        docker run --rm -it -p {{ .PORT }}:{{ .PORT}} -v ${PWD}:/docs
+        --platform linux/amd64 {{ .IMAGE }} serve
+        --dev-addr 0.0.0.0:{{ .PORT }} -f ./mkdocs.yml
   list:
     desc: List all
     cmds:
