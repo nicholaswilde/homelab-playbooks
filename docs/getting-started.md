@@ -42,6 +42,18 @@ y/arm64.proxmox.yaml` use the [`community.proxmox.proxmox`][1] plugin to connect
 formation about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible
 _host` variable is automatically set to the container's IP address.
 
+??? abstract "inventory/amd64.proxmox.yaml"
+
+    ```yaml
+    --8<-- "inventory/amd64.proxmox.yaml"
+    ```
+
+??? abstract "inventory/arm64.proxmox.yaml"
+
+    ```yaml
+    --8<-- "inventory/arm64.proxmox.yaml"
+    ```
+    
 ## :link: References
 
 [1]: <https://docs.ansible.com/ansible/latest/collections/community/proxmox/proxmox_inventory.html>
