@@ -15,7 +15,7 @@ edit_uri: "edit/main/docs/"
 # Page tree
 nav:
   - Home: index.md
-  - Installation: installation.md
+  - Getting started: getting-started.md
   - Configuration: configuration.md
   - Secrets: secrets.md
   - Usage: usage.md
