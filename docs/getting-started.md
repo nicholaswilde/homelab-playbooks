@@ -6,6 +6,8 @@ A password file is used by ansible vault to encrypt passwords.
 
 ### Generate a new password
 
+To create a new vault password file, use the `task init` command:
+
 === "Task"
 
     ```bash
@@ -18,6 +20,20 @@ A password file is used by ansible vault to encrypt passwords.
     openssl rand -hex 64 > .vault_pass
     chmod 600 .vault_pass
     ```
+
+This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.
+
+To decrypt the `.vault_pass.enc` file, use the `task decrypt` command:
+
+```bash
+task decrypt
+```
+
+To encrypt the `.vault_pass` file, use the `task encrypt` command:
+
+```bash
+task encrypt
+```
 
 ## :mag: &nbsp; Dynamic Proxmox Inventory
 
