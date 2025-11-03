@@ -2,10 +2,22 @@
 
 Secret variables are encrypted using Ansible Vault as a string or the entire file is encrypted.
 
-## String
+## Config
 
 WIP
+
+## String
+
+=== "Manual"
+
+    ```bash
+    ansible-vault encrypt_string "long-token-secret" --name "token_secret"
+    ```
 
 ## File
 
-WIP
+=== "Manual"
+
+    ```bash
+    ansible-vault encrypt "./inventory/group_vars/all.yaml"
+    ```
