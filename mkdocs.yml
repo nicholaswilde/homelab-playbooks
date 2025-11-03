@@ -112,12 +112,11 @@ markdown_extensions:
   - pymdownx.magiclink:
       repo_url_shorthand: true
       user: nicholaswilde
-      repo: homepage
+      repo: homelab-playbooks
   - pymdownx.mark
   - pymdownx.snippets:
       base_path:
-        - ./pve
-        - ./docker
+        - ./
   - pymdownx.smartsymbols
   - pymdownx.superfences:
       custom_fences:
