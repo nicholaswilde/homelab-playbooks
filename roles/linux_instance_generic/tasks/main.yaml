@@ -1,12 +1,4 @@
 ---
-# - name: "Setup apt"
-#   ansible.builtin.include_tasks:
-#     file: "apt.yaml"
-#     apply:
-#       tags:
-#         - apt
-#   tags:
-#     - always
 
 - name: "Setup reprepro"
   ansible.builtin.include_tasks:
@@ -75,23 +67,7 @@
   tags:
     - always
 
-# - name: "Setup cheat"
-#   ansible.builtin.include_tasks:
-#     file: "cheat.yaml"
-#     apply:
-#       tags:
-#         - cheat
-#   tags:
-#     - always
 
-# - name: "Setup git"
-#   ansible.builtin.include_tasks:
-#     file: "git.yaml"
-#     apply:
-#       tags:
-#         - git
-#   tags:
-#     - always
 
 - name: "Setup bash"
   ansible.builtin.include_tasks:
@@ -137,27 +113,7 @@
   tags:
     - always
 
-# - name: "Setup apprise"
-#   ansible.builtin.include_tasks:
-#     file: "apprise.yaml"
-#     apply:
-#       become: false
-#       tags:
-#         - apprise
-#   tags:
-#     - always
 
-# - name: "Setup AdGuard Home"
-  # ansible.builtin.include_tasks:
-  # file: "adguardhome.yaml"
-    # apply:
-      # become: false
-      # tags:
-        # - test
-        # - adguardhome
-  # tags:
-    # - always
-  # when: adguard_home_rewrite is defined and adguard_home_rewrite
 
 - name: "Run Misc"
   ansible.builtin.include_tasks:
