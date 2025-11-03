@@ -19,6 +19,18 @@ A downside is that `ansible-pull` needs to be installed on all containers, thus 
 
 ## :hammer_and_wrench: &nbsp; Usage
 
+### Vault Password
+
+To create a new vault password file, use the `task init` command:
+
+```shell
+task init
+```
+
+This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables.
+
+### Running Playbooks
+
 ```shell
 ansible-playbook playbooks/setup_lxc.yaml
 Vault password:
@@ -38,6 +50,13 @@ lxc_user: foo
 ansible_user: bar
 ansible_password: baz
 ```
+
+---
+
+## :mag: &nbsp; Dynamic Proxmox Inventory
+
+This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible_host` variable is automatically set to the container's IP address.
+
 
 ---
 
