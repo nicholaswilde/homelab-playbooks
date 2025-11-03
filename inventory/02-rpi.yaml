@@ -4,7 +4,11 @@ rpis:
     user: nicholas
     ansible_user: nicholas
   hosts:
-    pi-00:
-      ansible_host: 192.168.1.219
-    pi-02:
+    pi00:
+      ansible_host: 192.168.3.219
+    pi01:
+      ansible_host: 192.168.3.229
+    pi02:
       ansible_host: 192.168.3.250
+    pi04:
+      ansible_host: 192.168.2.88

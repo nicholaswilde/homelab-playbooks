@@ -1,8 +1,0 @@
----
-- name: Run a single task on all docker containers
-  hosts:
-    - docker
-  become: true
-
-  roles:
-    - single

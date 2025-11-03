@@ -1,9 +1,0 @@
----
-- name: Update all LXC containers
-  hosts:
-    - lxcAll
-  become: true
-
-  roles:
-    - update_apt
-    # - update_git

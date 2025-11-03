@@ -1,8 +1,8 @@
 ---
 - name: Update all containers
   hosts:
-    - lxcAll
-    - docker
+    - rpis
+    - proxmox_all_lxc
   become: true
 
   roles:

@@ -6,6 +6,26 @@ vars:
   VER: '2.5'
 
 tasks:
+  list:
+    desc: List all
+    cmds:
+      - ansible-inventory -i ./inventory/ --vars --list -y
+  ping:
+    desc: Ping all of inventory
+    cmds:
+      - ansible -i inventory/ all -m ping
+  amd64-test:
+    desc: Test amd64
+    cmds:
+      - ansible proxmox_all_lxc -i inventory/amd64.proxmox.yaml -m ansible.builtin.apt -a "update_cache=true" -b
+  arm64-test:
+    desc: Test arm64
+    cmds:
+      - ansible proxmox_all_lxc -i inventory/arm64.proxmox.yaml -m ansible.builtin.apt -a "update_cache=true" -b
+  rpis-test:
+    desc: Test arm64
+    cmds:
+      - ansible rpis -i inventory/02-rpi.yaml -m ansible.builtin.apt -a "update_cache=true" -b
   decrypt:
     desc: Decrypt
     preconditions:
@@ -34,11 +54,11 @@ tasks:
   amd64-list:
     desc: List the amd64 Proxmox inventory
     cmds:
-      - ansible-inventory -i inventory/amd64.proxmox.yaml --list
+      - ansible-inventory -i inventory/amd64.proxmox.yaml --list -y
   arm64-list:
     desc: List the arm64 Proxmox inventory
     cmds:
-      - ansible-inventory -i inventory/arm64.proxmox.yaml --list
+      - ansible-inventory -i inventory/arm64.proxmox.yaml --list -y
   amd64-graph:
     desc: Graph the amd64 Proxmox inventory
     cmds:
@@ -71,6 +91,16 @@ tasks:
     desc: Edit vault
     cmds:
       - ansible-vault edit {{ .VAULT_PATH }}
+  init:
+    desc: Generate a new .vault_pass file
+    preconditions:
+      - sh: test ! -f .vault_pass.enc
+        msg: ".vault_pass.enc already exists! Refusing to overwrite."
+      - sh: test ! -f .vault_pass
+        msg: ".vault_pass already exists! Refusing to overwrite."
+    cmds:
+      - openssl rand -hex 64 > .vault_pass
+      - chmod 600 .vault_pass
   default:
     cmds:
       - task -l

@@ -1,8 +1,0 @@
----
-- name: Update a single LXC container
-  hosts:
-    - lxcSingle
-  become: true
-
-  roles:
-    - update_git

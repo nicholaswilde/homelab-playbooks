@@ -1,8 +1,7 @@
 ---
 - name: Clean all containers
   hosts:
-    - lxcAll
-    - docker
+    - rpis
   become: true
 
   roles:

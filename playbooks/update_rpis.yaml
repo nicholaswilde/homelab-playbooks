@@ -1,8 +1,9 @@
 ---
-- name: Update all Raspberry Pis
+- name: "Update all Raspberry Pis"
   hosts:
     - rpis
   become: true
 
   roles:
     - update_apt
+    - update_git

@@ -2,9 +2,9 @@
 - name: Run a single task on all LXC containers
   hosts:
     - proxmox_all_lxc
+    - rpis
   become: true
 
   roles:
     - role: single
-      when: "'docker' in hostvars[inventory_hostname]['tags']"
       ignore_errors: true
