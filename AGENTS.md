@@ -64,7 +64,69 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 
 *   Ansible Vault is used to encrypt sensitive variables.
 *   The vault password will be prompted when running playbooks.
+*   The vault password can be provided via a file named `.vault_pass` in the project root. This file is encrypted using SOPS.
+*   To create a new `.vault_pass` file, use the `task init` command:
+    ```bash
+    task init
+    ```
+*   To decrypt the `.vault_pass.enc` file, use the `task decrypt` command:
+    ```bash
+    task decrypt
+    ```
+*   To encrypt the `.vault_pass` file, use the `task encrypt` command:
+    ```bash
+    task encrypt
+    ```
 *   To edit the vault, use the following command:
     ```bash
     task ve
+    ```
+*   To edit the `.vault_pass` file, use the following command:
+    ```bash
+    sops .vault_pass
+    ```
+
+
+
+### Dynamic Proxmox Inventory
+
+This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible_host` variable is automatically set to the container's IP address.
+
+## Inventory Management
+
+*   **List all inventory:**
+    ```bash
+    task list
+    ```
+*   **Ping all hosts in inventory:**
+    ```bash
+    task ping
+    ```
+*   **Test amd64 hosts:**
+    ```bash
+    task amd64-test
+    ```
+*   **Test arm64 hosts:**
+    ```bash
+    task arm64-test
+    ```
+*   **Test rpis hosts:**
+    ```bash
+    task rpis-test
+    ```
+*   **List amd64 Proxmox inventory:**
+    ```bash
+    task amd64-list
+    ```
+*   **List arm64 Proxmox inventory:**
+    ```bash
+    task arm64-list
+    ```
+*   **Graph amd64 Proxmox inventory:**
+    ```bash
+    task amd64-graph
+    ```
+*   **Graph arm64 Proxmox inventory:**
+    ```bash
+    task arm64-graph
     ```

@@ -17,15 +17,41 @@ To create a new vault password file, use the `task init` command:
 ```shell
 task init
 ```
-This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables.
+This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.
 
-Update passwords located in `inventory/group_vars/all.yaml`.
+To decrypt the `.vault_pass.enc` file, use the `task decrypt` command:
+
+```bash
+task decrypt
+```
+
+To encrypt the `.vault_pass` file, use the `task encrypt` command:
+
+```bash
+task encrypt
+```
+
+Update passwords located in `inventory/group_vars/all.yaml`. To edit this file, use the following command:
+
+```bash
+task ve
+```
 
 Run playbook to setup a single LXC.
 
-```
+```bash
 ansible-playbook playbooks/setup_lxcSingle.yaml
 ```
+
+*   **Update all hosts:**
+    ```bash
+    ansible-playbook playbooks/update_all.yaml
+    ```
+
+*   **See all available tasks:**
+    ```bash
+    task -l
+    ```
 
 ---
 
