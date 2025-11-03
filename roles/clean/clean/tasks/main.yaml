@@ -45,14 +45,21 @@
 - name: "Set disk_usage_ration"
   ansible.builtin.set_fact: disk_usage_ratio="{{ disk_usage | float / mount.size_total }}"
 
+# - ansible.builtin.set_fact: disk_usage_s="{{ (disk_usage|float / 1000000000) | round(1, 'common') }}GB"
+
+
 - name: "Set disk_usage_s"
   ansible.builtin.set_fact: disk_usage_s="{{ (disk_usage | float / (1024 * 1024 * 1024)) | round(2, 'common') }}GB"
+
+# - ansible.builtin.set_fact: disk_total_s="{{ (mount.size_total / 1000000000) | round(1, 'common') }}GB"
 
 - name: "Set disk_total_s"
   ansible.builtin.set_fact: disk_total_s="{{ (mount.size_total / (1024 * 1024 * 1024)) | round(2, 'common') }}GB"
 
 - name: "Set disk_usage_ratio_s"
   ansible.builtin.set_fact: disk_usage_ratio_s="{{ 100 * (disk_usage_ratio | float) | round(2, 'common') }}%"
+
+# - ansible.builtin.set_fact: disk_limit_ratio_s="{{ (100 * disk_limit|float) |round }}%"
 
 - name: "Show disk usage"
   ansible.builtin.debug:

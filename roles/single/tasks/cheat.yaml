@@ -6,7 +6,7 @@
     
 - name: Download cheat config file
   ansible.builtin.get_url:
-    url: https://github.com/nicholaswilde/dotfiles2/raw/refs/heads/main/.config/cheat/conf.yml
+    url: https://github.com/nicholaswilde/dotfiles/raw/refs/heads/main/.config/cheat/conf.yml
     dest: "{{ ansible_env.HOME }}/.config/cheat/conf.yml"
 
 - name: Download cheat config file

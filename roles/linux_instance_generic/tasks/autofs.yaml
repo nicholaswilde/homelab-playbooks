@@ -1,0 +1,22 @@
+---
+- name: "Update auto.master for autofs"
+  ansible.builtin.lineinfile:
+    path: "/etc/auto.master"
+    state: present
+    line: "/mnt /etc/auto.nfs --ghost --timeout=60"
+  ignore_errors: true
+
+- name: "Create auto.nfs"
+  ansible.builtin.lineinfile:
+    path: "/etc/auto.nfs"
+    state: present
+    create: true
+    line: "{{ linux_instance_generic_nfs_path }}"
+  register: auto_nfs_result
+
+- name: "Restart service autofs, in all cases"
+  ansible.builtin.service:
+    name: autofs
+    state: restarted
+  ignore_errors: true
+  when: auto_nfs_result.changed

@@ -1,0 +1,39 @@
+---
+- name: "Docker block"
+  vars:
+    compose_project_dir: "{{ update_docker_homelab_docker_folder }}"
+    compose_file_name: "compose.yaml"
+  block:
+    - name: "Check if file exists in the project directory, {{ compose_file_name }}"
+      ansible.builtin.stat:
+        path: "{{ compose_project_dir }}/{{ compose_file_name }}"
+      register: compose_file_stat
+
+    - name: "Update Docker Compose services (pull images, recreate containers)"
+      community.docker.docker_compose_v2:
+        project_src: "{{ compose_project_dir }}"
+        project_name: "{{ compose_project_name | default(omit) }}"
+        state: present
+        pull: always
+        recreate: always
+        remove_orphans: true
+        build: always
+      register: compose_update_result
+      when: compose_file_stat.stat.exists
+
+    - name: "Install docker_prune dependencies"
+      ansible.builtin.apt:
+        name: "python3-responses"
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: "Prune everything (including non-dangling images)"
+      community.docker.docker_prune:
+        containers: true
+        images: true
+        images_filters:
+          dangling: false
+        networks: true
+        volumes: true
+        builder_cache: true

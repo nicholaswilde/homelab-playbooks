@@ -1,0 +1,15 @@
+[Unit]
+Description=Beszel Agent Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment="PORT=45876"
+Environment="KEY={{ linux_instance_generic_beszel_key }}"
+# Environment="EXTRA_FILESYSTEMS=sdb"
+Restart=always
+RestartSec=5
+ExecStart=/usr/local/bin/beszel-agent
+
+[Install]
+WantedBy=multi-user.target

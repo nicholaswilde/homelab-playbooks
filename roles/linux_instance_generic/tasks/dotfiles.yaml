@@ -1,0 +1,46 @@
+---
+- name: "Do a git checkout of dotfiles repo"
+  ansible.builtin.git:
+    repo: "{{ linux_instance_generic_dotfiles_repo }}"
+    dest: "{{ ansible_env.HOME }}/{{ linux_instance_generic_dotfiles_folder }}"
+    accept_hostkey: true
+    force: true
+  become: false
+
+- name: "Ensure stow is installed"
+  ansible.builtin.package:
+    name: stow
+    state: present
+  become: true
+
+- name: "Cleanup files"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ ansible_env.HOME }}/.bash_aliases"
+    - "{{ ansible_env.HOME }}/.bash_exports"
+    - "{{ ansible_env.HOME }}/.bash_functions"
+    - "{{ ansible_env.HOME }}/.config/cheat"
+    - "{{ ansible_env.HOME }}/.config/gh"
+    - "{{ ansible_env.HOME }}/.config/micro"
+    - "{{ ansible_env.HOME }}/.bashrc"
+    - "{{ ansible_env.HOME }}/.gitconfig"
+    - "{{ ansible_env.HOME }}/.gnupg/gpg-agent.conf"
+    - "{{ ansible_env.HOME }}/.gnupg/gpg.conf"
+    - "{{ ansible_env.HOME }}/.config/tmux/tmux.conf"
+  ignore_errors: true
+
+- name: "Stow dotfile configurations"
+  ansible.builtin.command:
+    cmd: "task install"
+    chdir: "{{ ansible_env.HOME }}/{{ linux_instance_generic_dotfiles_folder }}"
+  register: stow_result
+  changed_when: "'LINK' in stow_result.stdout"
+  become: false
+
+- name: "Source bashrc"
+  ansible.builtin.shell: "source {{ ansible_env.HOME }}/.bashrc"
+  args:
+    executable: "/bin/bash"
+  when: stow_result.changed

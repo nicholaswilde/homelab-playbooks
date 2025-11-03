@@ -1,0 +1,2 @@
+---
+update_docker_homelab_docker_folder: "{{ ansible_env.HOME }}/{{ linux_instance_generic_git_homelab_folder }}/docker/{{ inventory_hostname_short }}"

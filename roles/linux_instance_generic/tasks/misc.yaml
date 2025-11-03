@@ -1,0 +1,5 @@
+---
+- name: "Remove /etc/profile.d/00_lxc-details.sh if it exists"
+  ansible.builtin.file:
+    path: "/etc/profile.d/00_lxc-details.sh"
+    state: absent

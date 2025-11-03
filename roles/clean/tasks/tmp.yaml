@@ -1,0 +1,16 @@
+---
+- name: "Recursively find /tmp files older than {{ clean_tmp_age }}"
+  ansible.builtin.find:
+    paths: "/tmp"
+    age: "{{ clean_tmp_age }}"
+    recurse: true
+  register: cleanup
+
+- name: "Delete /tmp files"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ cleanup.files }}"
+  ignore_errors: true
+  no_log: true
+  when: cleanup.files is defined

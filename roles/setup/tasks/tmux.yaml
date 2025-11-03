@@ -2,7 +2,7 @@
 
 - name: Download dotfiles
   ansible.builtin.git:
-    repo: 'https://github.com/nicholaswilde/dotfiles2.git'
+    repo: 'https://github.com/nicholaswilde/dotfiles.git'
     dest: '/tmp/dotfiles'
   
 - name: Create .config directory if it does not exist

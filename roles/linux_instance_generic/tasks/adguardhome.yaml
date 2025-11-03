@@ -1,0 +1,83 @@
+---
+- name: "Run add_adguardhome_rewrite.yaml"
+  ansible.builtin.include_tasks: "add_adguardhome_rewrite.yaml"
+  loop: "{{ adguard_home_rewrite }}"
+    # - domain: "test.debian-1.l.nicholaswilde.io"
+    #   answer: "traefik.l.nicholaswilde.io"
+  loop_control:
+    loop_var: "rewrite"
+  # when:
+    # - not url_check_result.failed
+
+# - name: "Debug"
+#   ansible.builtin.debug:
+#     var: adguard_home_rewrite
+#   when:
+#     - debug_enabled
+#     - adguard_home_rewrite is defined
+#     - (adguard_home_rewrite | reject('mapping') | list | length) == 0
+
+# - name: "AdGuard Home block"
+#   block:
+#     - name: "Retrieve DNS rewrites from AdGuard Home"
+#       ansible.builtin.uri:
+#         url: "{{ adguard_url }}/control/rewrite/list"
+#         method: GET
+#         return_content: true
+#       register: adguard_rewrites_response
+#       ignore_errors: true
+
+#     - name: "Display DNS rewrites"
+#       ansible.builtin.debug:
+#         var: adguard_rewrites_response.json
+#       when:
+#         - adguard_rewrites_response.status == 200
+#         - debug_enabled
+
+#     - name: "Perform a boolean check for '{{ domain_to_check }}'"
+#       ansible.builtin.set_fact:
+#         is_domain_present: "{{ (adguard_rewrites_response.json | default([]) | selectattr('domain', 'equalto', domain_to_check) | list | length) > 0 }}"
+#       when: adguard_rewrites_response.status == 200
+#       changed_when: is_domain_present == False
+
+#     - name: "Display boolean check result for '{{ domain_to_check }}'"
+#       ansible.builtin.debug:
+#         msg: "Is '{{ domain_to_check }}' present? {{ is_domain_present }}"
+#       when:
+#         - domain_to_check is defined
+#         - is_domain_present is defined
+
+#     - name: "Define rewrite"
+#       ansible.builtin.set_fact:
+#         new_rewrite_rule:
+#           domain: "{{ adguard_home_rewrite_domain }}"
+#           answer: " {{ adguard_home_rewrite_answer }}"
+#       when:
+#         - is_domain_present is defined
+#         - is_domain_present == False
+
+#     - name: "Add DNS rewrite rule using AdGuard Home API"
+#       ansible.builtin.uri:
+#         url: "{{ adguard_url }}/control/rewrite/add"
+#         method: POST
+#         body_format: json
+#         body: "{{ new_rewrite_rule }}"
+#         status_code: 200
+#         return_content: true
+#       register: add_rewrite_response
+#       changed_when: "add_rewrite_response.status in [200, 201, 202]"
+#       when: new_rewrite_rule is defined
+
+#     - name: "Display API response"
+#       ansible.builtin.debug:
+#         var: add_rewrite_response
+#       when:
+#         - add_rewrite_response.status is defined
+#         - debug_enabled
+#         - add_rewrite_response.status == 200
+#   vars:
+#     adguard_url: "{{ linux_instance_generic_adguard_home_url }}"
+#     domain_to_check: "{{ adguard_home_rewrite_domain }}"
+#   when:
+#     - adguard_home_rewrite_domain is defined
+#     - adguard_home_rewrite_answer is defined

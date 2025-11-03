@@ -1,0 +1,156 @@
+---
+- name: "Show folder object"
+  ansible.builtin.debug:
+    msg:
+      - "folder.label: {{ folder.label }}"
+      - "folder.id: {{ folder.id }}"
+      - "folder.path: {{ folder.path }}"
+  when: debug_enabled
+
+- name: "Add managed node to the control node folder"
+  when: managed_node_api_key is defined and not url_check_result.failed
+  ignore_errors: true
+  block:
+    - name: "Get a list of devices from the control node folder"
+      ansible.builtin.uri:
+        url: "{{ control_node_api_folders_endpoint }}/{{ folder.id }}"
+        method: GET
+        body_format: json
+        return_content: true
+        headers:
+          X-API-Key: "{{ control_node_api_key | string }}"
+          Content-Type: "application/json"
+        status_code: 200
+      register: get_folder_result
+
+    - name: "Extract the list of device objects from the folder"
+      ansible.builtin.set_fact:
+        device_objects: "{{ get_folder_result.json.devices | default([]) }}"
+
+    - name: "Create a list map of just the device IDs from the folder"
+      ansible.builtin.set_fact:
+        device_id_list: "{{ device_objects | map(attribute='deviceID') | list }}"
+      when: device_objects is iterable and device_objects is not string
+
+    - name: "Display the list of Device IDs"
+      ansible.builtin.debug:
+        var: device_id_list
+      when: device_id_list is defined and debug_enabled
+
+    - name: "Initialize updated_device_list with existing devices"
+      ansible.builtin.set_fact:
+        updated_device_list: "{{ device_objects | default([]) }}"
+
+    - name: "Add managed_node_device_id to updated_device_list if not already present"
+      ansible.builtin.set_fact:
+        updated_device_list: "{{ updated_device_list + [{'deviceID': managed_node_device_id}] }}"
+      when: managed_node_device_id is defined and managed_node_device_id not in device_id_list
+
+    - name: "Add managed node to the control node folder"
+      ansible.builtin.uri:
+        url: "{{ control_node_api_folders_endpoint }}/{{ folder.id }}"
+        method: PATCH
+        body_format: json
+        headers:
+          X-API-Key: "{{ control_node_api_key | string }}"
+          Content-Type: "application/json"
+        status_code: [200, 202, 204]
+        body: "{{ {'devices': updated_device_list} | to_json }}"
+      register: add_result
+      when: managed_node_device_id is defined and managed_node_device_id not in device_id_list
+
+- name: "Add control node folder to the managed node"
+  ignore_errors: true
+  block:
+    - name: "Get a list of folders on the managed node"
+      ansible.builtin.command: 'syncthing cli config folders list'
+      register: managed_node_folders
+      become_user: "{{ syncthing_run_user }}"
+      changed_when: false
+      ignore_errors: true
+
+    - name: "Debug managed_node_folders"
+      ansible.builtin.debug:
+        var: managed_node_folders.stdout_lines
+      when:
+        - managed_node_folders.stdout_lines is defined
+        - debug_enabled
+
+    - name: "Add control node folder to managed node"
+      ansible.builtin.command: 'syncthing cli config folders add --id "{{ folder.id }}" --label "{{ folder.label }}" --path "{{ folder.path }}"'
+      register: add_folder_result
+      become_user: "{{ syncthing_run_user }}"
+      ignore_errors: true
+      when: folder.id not in managed_node_folders.stdout_lines
+
+- name: "Add control node to the managed node folder"
+  when:
+    - managed_node_api_key is defined
+    - not url_check_result.failed
+  ignore_errors: true
+  block:
+    - name: "Get a list of devices from the managed node folder"
+      ansible.builtin.command: "syncthing cli config folders {{ folder.id }} dump-json"
+      register: get_folder_result
+      become_user: "{{ syncthing_run_user }}"
+      changed_when: false
+      ignore_errors: true
+
+    - name: "Extract the list of device objects from the folder"
+      ansible.builtin.set_fact:
+        folder_objects: "{{ get_folder_result.json.devices | default([]) }}"
+
+    - name: "Create a list map of just the device IDs from the folder"
+      ansible.builtin.set_fact:
+        device_id_list: "{{ folder_objects | map(attribute='deviceID') | list }}"
+      when:
+        - folder_objects is iterable
+        - folder_objects is not string
+
+    - name: "Display the list of Device IDs"
+      ansible.builtin.debug:
+        var: device_id_list
+      when: device_id_list is defined and debug_enabled
+
+    - name: "Add control node to the manage node folder"
+      ansible.builtin.uri:
+        url: "{{ managed_node_api_folders_endpoint }}/{{ folder.id }}"
+        method: PATCH
+        body_format: json
+        headers:
+          X-API-Key: "{{ managed_node_api_key | string }}"
+          Content-Type: "application/json"
+        status_code: [200, 202, 204]
+        body: '{ "devices": [ { "deviceID": "{{ control_node_device_id }}" } ] }'
+      register: add_result
+      when:
+        - control_node_device_id is defined
+        - control_node_device_id not in device_id_list
+
+- name: "Update permissions for folder {{ folder.label }}"
+  when:
+    - folder.label == "gpg" or folder.label == "ssh"
+    - add_result is defined
+  block:
+    - name: "Ensure directory exists and has correct permissions, {{ folder.path | basename }}"
+      ansible.builtin.file:
+        path: "{{ folder.path }}"
+        state: directory
+        owner: "{{ syncthing_run_user }}"
+        mode: '0700' # drwx------
+
+    - name: "Set permissions for files within {{ folder.path | basename }}"
+      ansible.builtin.command: "find {{ folder.path }} -type f -exec chmod 600 {} \\;"
+      changed_when: true
+      ignore_errors: true
+
+    - name: "Set permissions for subdirectories within {{ folder.path | basename }}"
+      ansible.builtin.command: "find {{ folder.path }} -mindepth 1 -type d -exec chmod 700 {} \\;"
+      changed_when: true
+      ignore_errors: true
+
+    - name: "Set permissions for *.pub files within {{ folder.path | basename }}"
+      ansible.builtin.command: 'find "{{ folder.path }}" -type f -name "*.pub" -exec chmod 644 {} \;'
+      changed_when: true
+      when: folder.label == "ssh"
+      ignore_errors: true

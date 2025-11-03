@@ -4,4 +4,4 @@ lxcSingle:
     ansible_user: root
   hosts:
     test:
-      ansible_host: 192.168.2.105
+      ansible_host: 192.168.2.184

@@ -1,0 +1,8 @@
+---
+- name: "Do a git checkout of the homelab repo"
+  ansible.builtin.git:
+    repo: "{{ linux_instance_generic_git_repo }}"
+    dest: "{{ ansible_env.HOME }}/{{ linux_instance_generic_git_homelab_folder }}"
+    accept_hostkey: true
+    force: true
+  become: false
