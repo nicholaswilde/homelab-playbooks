@@ -60,7 +60,7 @@ tasks:
   rpis-test:
     desc: Test arm64
     cmds:
-      - ansible rpis -i inventory/02-rpi.yaml -m ansible.builtin.apt -a "update_cache=true" -b
+      - ansible rpis -i inventory/rpis.yaml -m ansible.builtin.apt -a "update_cache=true" -b
   decrypt:
     desc: Decrypt
     preconditions:
@@ -115,13 +115,13 @@ tasks:
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
   setup:
-    desc: Setup LXCs
+    desc: Setup a single LXC
     cmds:
-      - ansible-playbook playbooks/setup_lxc.yaml
+      - ansible-playbook playbooks/setup_single.yaml
   update:
-    desc: Update LXCs
+    desc: Update a single LXC
     cmds:
-      - ansible-playbook playbooks/update_lxc.yaml
+      - ansible-playbook playbooks/update_single.yaml
   ve:
     desc: Edit vault
     cmds:

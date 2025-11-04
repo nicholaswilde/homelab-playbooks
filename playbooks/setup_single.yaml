@@ -1,7 +1,7 @@
 ---
-- name: Setup LXC single
+- name: Setup a single host
   hosts:
-    - lxcSingle
+    - single
   become: true
   roles:
     - linux_instance_generic

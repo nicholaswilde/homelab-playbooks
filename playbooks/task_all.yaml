@@ -1,5 +1,5 @@
 ---
-- name: Run a single task on all LXC containers
+- name: Run a single task on all hosts
   hosts:
     - proxmox_all_lxc
     - rpis

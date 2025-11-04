@@ -1,5 +1,5 @@
 ---
-lxcSingle:
+single:
   vars:
     ansible_user: root
   hosts:

@@ -1,6 +1,6 @@
 ---
 # - hosts:
-#     - lxcSingle
+#     - single
 #   become: true
 # 
 #   roles:

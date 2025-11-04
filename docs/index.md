@@ -10,56 +10,37 @@
 
 ## :pushpin: TL;DR
 
-### :closed_lock_with_key: Vault Password
-
-To create a new vault password file, use the `task init` command:
-
-```shell
-task init
-```
-This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.
-
-To decrypt the `.vault_pass.enc` file, use the `task decrypt` command:
-
-```bash
-task decrypt
-```
-
-To encrypt the `.vault_pass` file, use the `task encrypt` command:
-
-```bash
-task encrypt
-```
-
-Update passwords located in `inventory/group_vars/all.yaml`. To edit this file, use the following command:
-
-```bash
-task ve
-```
-
-Run playbook to setup a single LXC.
-
-```bash
-ansible-playbook playbooks/setup_lxcSingle.yaml
-```
-
-*   **Update all hosts:**
-    ```bash
-    ansible-playbook playbooks/update_all.yaml
-    ```
-
-*   **See all available tasks:**
-    ```bash
-    task -l
-    ```
+- **Install dependencies:** `task deps`
+- **Generate a new vault password:** `task init`
+- **Edit secrets:** `task ve`
+- **Update all hosts:** `ansible-playbook playbooks/update_all.yaml`
+- **See all available tasks:** `task -l`
 
 ---
 
-## :mag: &nbsp; Dynamic Proxmox Inventory
+## :construction_worker: Prerequisites
 
-This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible_host` variable is automatically set to the container's IP address.
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [Python](https://www.python.org/downloads/)
+- [Task](https://taskfile.dev/installation/)
 
----
+## :package: Installation
+
+To get started, clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/nicholaswilde/homelab-playbooks.git
+cd homelab-playbooks
+task deps
+```
+
+For more detailed instructions, see the [Getting Started](./getting-started.md) guide.
+
+## :hammer_and_wrench: Development
+
+This project uses [Task](https://taskfile.dev/) for command running and [MkDocs](https://www.mkdocs.org/) for documentation.
+
+For more information on development, see the [Development](./development.md) guide.
 
 ## :scales: License
 

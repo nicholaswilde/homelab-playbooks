@@ -1,7 +1,7 @@
 ---
-- name: Update a single LXC container
+- name: Update a single host
   hosts:
-    - lxcSingle
+    - single
   become: true
 
   roles:

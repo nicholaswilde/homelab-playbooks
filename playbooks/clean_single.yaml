@@ -1,0 +1,8 @@
+---
+- name: Clean a single host
+  hosts:
+    - single
+  become: true
+
+  roles:
+    - clean

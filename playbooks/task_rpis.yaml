@@ -1,0 +1,8 @@
+---
+- name: Run a single task on all Raspberry Pis
+  hosts:
+    - rpis
+  become: true
+
+  roles:
+    - single

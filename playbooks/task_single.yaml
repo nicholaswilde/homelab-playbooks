@@ -1,0 +1,8 @@
+---
+- name: Run a single task on a single host
+  hosts:
+    - single
+  become: true
+
+  roles:
+    - single

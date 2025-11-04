@@ -19,8 +19,10 @@ nav:
   - Configuration: configuration.md
   - Secrets: secrets.md
   - Usage: usage.md
+  - Workflows: workflows.md
   - Testing: testing.md
   - Troubleshooting: troubleshooting.md
+  - Development: development.md
   # - Collections: collections.md
   # - Reference:
   #     - Tags: reference/tags.md
@@ -79,7 +81,6 @@ theme:
 plugins:
   - search
   - tags:
-      tags_file: reference/tags.md
   - minify:
       minify_html: true
 

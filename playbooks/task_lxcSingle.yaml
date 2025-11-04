@@ -1,8 +1,0 @@
----
-- name: Run a single task on a single LXC container
-  hosts:
-    - lxcSingle
-  become: true
-
-  roles:
-    - single
