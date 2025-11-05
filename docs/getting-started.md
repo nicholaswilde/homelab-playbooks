@@ -15,7 +15,7 @@ This command will:
 - Install Ansible roles from `requirements.yaml`.
 - Install Ansible collections from `requirements.yaml`.
 
-## Generate a new password
+## :key: Generate a new password
 
 To create a new vault password file, use the `task init` command:
 
@@ -25,7 +25,7 @@ task init
 
 This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.
 
-## Edit secrets
+## :closed_lock_with_key: Edit secrets
 
 To edit the secrets file, use the following command:
 
