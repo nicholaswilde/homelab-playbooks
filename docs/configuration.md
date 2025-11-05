@@ -78,7 +78,7 @@ Variables for individual roles are stored in the `roles/<role name>/defaults/mai
 !!! example
 
     ```yaml
-    --8<-- "roles/linux_generic/defaults/main.yaml"
+    --8<-- "roles/linux_instance_generic/defaults/main.yml"
     ```
 
 ## :gear: Ansible Configuration File
