@@ -78,7 +78,7 @@ The `ansible.cfg` file contains default settings for Ansible. Here are the key c
 ```ini
 [defaults]
 inventory = ./inventory/
-playbook = ./playbooks/update_lxc.yaml 
+playbook = ./playbooks/update_all.yaml 
 timeout = 25
 vault_password_file = ./.vault_pass
 interpreter_python = auto_silent
