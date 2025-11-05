@@ -71,6 +71,16 @@ all:
 
 By including this static inventory file when running your Ansible playbooks, the `ansible_user` specified in `inventory/static_arm64.yaml` will take precedence for the `arm64` host, while other dynamically discovered hosts will continue to use the `ansible_user` defined in the Proxmox dynamic inventory configuration.
 
+## :gear: Role Configuration Variables
+
+Variables for individual roles are stored in the `roles/<role name>/defaults/main.yaml`
+
+!!! example
+
+    ```yaml
+    --8<-- "roles/linux_generic/defaults/main.yaml"
+    ```
+
 ## :gear: Ansible Configuration File
 
 The `ansible.cfg` file contains default settings for Ansible. Here are the key configurations used in this project:
