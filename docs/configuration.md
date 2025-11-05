@@ -118,7 +118,7 @@ There are several playbooks available for managing the Raspberry Pi hosts:
     ansible-playbook playbooks/task_rpis.yaml
     ```
 
-## :nas: OpenMediaVault Host
+## :simple-openmediavault: OpenMediaVault Host
 
 I have an OpenMediaVault (OMV) instance running as a VM on my Proxmox host. It is managed as a single host.
 
