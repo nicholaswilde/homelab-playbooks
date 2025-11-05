@@ -1,0 +1,28 @@
+---
+setup_git_email: "ncwilde43@gmail.com"
+setup_git_signing_key: "69FF3D02ABFCD01F328778D5374FA199233281E4"
+setup_git_repo: "git@github.com:nicholaswilde/homelab.git"
+setup_git_homelab_folder: "git/nicholaswilde/homelab"
+
+setup_nfs_path: "storage -fstype=nfs4,rw 192.168.2.19:/storage"
+
+setup_proxy: "http://192.168.2.40:3142"
+
+setup_beszel_key: ""
+
+setup_dotfiles_repo: "https://github.com/nicholaswilde/dotfiles.git"
+setup_dotfiles_folder: "git/nicholaswilde/dotfiles"
+
+
+setup_reprepro_base_url: "http://deb.l.nicholaswilde.io"
+setup_reprepro_key_url: "http://deb.l.nicholaswilde.io/public.gpg.key"
+
+setup_syncthing_port: '8384'
+setup_syncthing_control_node_ip: "192.168.2.28"
+setup_syncthing_control_node_label: "amd2"
+
+setup_debug_enabled: false
+
+setup_adguard_home_url: "http://adguard01.l.nicholaswilde.io"
+
+setup_ssh_public_key_url: "https://github.com/nicholaswilde.keys"

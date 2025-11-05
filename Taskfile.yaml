@@ -122,6 +122,22 @@ tasks:
     desc: Update a single LXC
     cmds:
       - ansible-playbook playbooks/update_single.yaml
+  omv-update:
+    desc: Update omv
+    cmds:
+      - ansible-playbook playbooks/update_omv.yaml
+  remove-homelab-pull:
+    desc: Remove homelab-pull service and timer
+    cmds:
+      - ansible-playbook playbooks/remove_homelab_pull.yaml
+  task-chromeos:
+    desc: Run chromeos task on all hosts
+    cmds:
+      - ansible-playbook playbooks/task_chromeos.yaml
+  replace-dotfiles:
+    desc: Replace dotfiles3 with dotfiles repo
+    cmds:
+      - ansible-playbook playbooks/replace_dotfiles.yaml
   ve:
     desc: Edit vault
     cmds:

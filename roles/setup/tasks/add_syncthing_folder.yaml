@@ -5,7 +5,7 @@
       - "folder.label: {{ folder.label }}"
       - "folder.id: {{ folder.id }}"
       - "folder.path: {{ folder.path }}"
-  when: debug_enabled
+  when: setup_debug_enabled
 
 - name: "Add managed node to the control node folder"
   when: managed_node_api_key is defined and not url_check_result.failed
@@ -35,7 +35,7 @@
     - name: "Display the list of Device IDs"
       ansible.builtin.debug:
         var: device_id_list
-      when: device_id_list is defined and debug_enabled
+      when: device_id_list is defined and setup_debug_enabled
 
     - name: "Initialize updated_device_list with existing devices"
       ansible.builtin.set_fact:
@@ -74,7 +74,7 @@
         var: managed_node_folders.stdout_lines
       when:
         - managed_node_folders.stdout_lines is defined
-        - debug_enabled
+        - setup_debug_enabled
 
     - name: "Add control node folder to managed node"
       ansible.builtin.command: 'syncthing cli config folders add --id "{{ folder.id }}" --label "{{ folder.label }}" --path "{{ folder.path }}"'
@@ -110,7 +110,7 @@
     - name: "Display the list of Device IDs"
       ansible.builtin.debug:
         var: device_id_list
-      when: device_id_list is defined and debug_enabled
+      when: device_id_list is defined and setup_debug_enabled
 
     - name: "Add control node to the manage node folder"
       ansible.builtin.uri:

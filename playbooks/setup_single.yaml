@@ -4,4 +4,4 @@
     - single
   become: true
   roles:
-    - linux_instance_generic
+    - setup

@@ -65,7 +65,7 @@
         msg: "{{ syncthing_version_output.stdout }}"
       when:
         - syncthing_version_output is defined
-        - debug_enabled
+        - setup_debug_enabled
 
 - name: "Enable Syncthing service and change config"
   vars:
@@ -106,7 +106,7 @@
       ignore_errors: true
       no_log: true
       loop:
-        - "syncthing cli config gui raw-address set \"0.0.0.0:{{ linux_instance_generic_syncthing_port }}\""
+        - "syncthing cli config gui raw-address set \"0.0.0.0:{{ setup_syncthing_port }}\""
         - "syncthing cli config options global-ann-enabled set false"
         - "syncthing cli config options uraccepted set 3"
         - "syncthing cli config options urseen set 3"
@@ -139,7 +139,7 @@
         var: managed_node_api_key
       when:
         - managed_node_api_key is defined
-        - debug_enabled
+        - setup_debug_enabled
       ignore_errors: true
 
 - name: Check if the control node URL is reachable
@@ -199,7 +199,7 @@
         var: managed_node_device_id
       when:
         - managed_node_device_id is defined
-        - debug_enabled
+        - setup_debug_enabled
 
 - name: "Add managed node to the control node"
   when:
@@ -212,7 +212,7 @@
         var: control_node_api_key
       when:
         - control_node_api_key is defined
-        - debug_enabled
+        - setup_debug_enabled
 
     - name: "Get a list of devices from the control node"
       ansible.builtin.uri:
@@ -237,7 +237,7 @@
         var: syncthing_device_ids_map
       when:
         - syncthing_device_ids_map is defined
-        - debug_enabled
+        - setup_debug_enabled
 
     - name: "Add managed node to the control node"
       ansible.builtin.uri:
@@ -269,7 +269,7 @@
         var: control_node_device_id
       when:
         - control_node_device_id is defined
-        - debug_enabled
+        - setup_debug_enabled
 
     - name: "Get a list of devices on the managed node"
       ansible.builtin.command: 'syncthing cli config devices list'
@@ -283,13 +283,13 @@
         var: device_ids.stdout_lines
       when:
         - device_ids.stdout_lines is defined
-        - debug_enabled
+        - setup_debug_enabled
 
     - name: "Add managed node to main node"
       ansible.builtin.command: >
         syncthing cli config devices add
         --device-id "{{ control_node_device_id }}"
-        --name "{{ linux_instance_generic_syncthing_control_node_label }}"
+        --name "{{ setup_syncthing_control_node_label }}"
         --addresses dynamic
       register: add_main_result
       become_user: "{{ syncthing_run_user }}"

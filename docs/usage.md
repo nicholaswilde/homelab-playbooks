@@ -17,6 +17,14 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 *   `task task_lxcAll`: Run a single task on all LXC containers.
 *   `task task_rpis`: Run a single task on all Raspberry Pis.
 
+## :nas: OMV Tasks
+
+*   `task omv-update`: Update the OpenMediaVault host.
+
+## :arrow_down: Homelab-Pull Tasks
+
+*   `task remove-homelab-pull`: Remove the homelab-pull service and timer from all hosts.
+
 ## :file_folder: Inventory Tasks
 
 *   `task list`: List all inventory.

@@ -1,8 +1,8 @@
 ---
 - name: "Do a git checkout of dotfiles repo"
   ansible.builtin.git:
-    repo: "{{ linux_instance_generic_dotfiles_repo }}"
-    dest: "{{ ansible_env.HOME }}/{{ linux_instance_generic_dotfiles_folder }}"
+    repo: "{{ setup_dotfiles_repo }}"
+    dest: "{{ ansible_env.HOME }}/{{ setup_dotfiles_folder }}"
     accept_hostkey: true
     force: true
   become: false
@@ -34,7 +34,7 @@
 - name: "Stow dotfile configurations"
   ansible.builtin.command:
     cmd: "task install"
-    chdir: "{{ ansible_env.HOME }}/{{ linux_instance_generic_dotfiles_folder }}"
+    chdir: "{{ ansible_env.HOME }}/{{ setup_dotfiles_folder }}"
   register: stow_result
   changed_when: "'LINK' in stow_result.stdout"
   become: false

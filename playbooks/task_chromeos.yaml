@@ -1,0 +1,9 @@
+---
+- name: Run chromeos task on all hosts
+  hosts: all
+  become: true
+  tasks:
+    - name: Include chromeos task
+      ansible.builtin.include_role:
+        name: setup
+        tasks_from: chromeos.yaml

@@ -73,7 +73,79 @@ By including this static inventory file when running your Ansible playbooks, the
 
 ## :fontawesome-brands-raspberry-pi: Raspberry Pi Hosts
 
-I have multiple Raspberry Pis on my network that are not part my dynamic inventory.
+I have multiple Raspberry Pis on my network that are not part my dynamic inventory. They are managed using a static inventory file and specific playbooks.
+
+### :file_folder: Inventory
+
+The inventory for the Raspberry Pi hosts is defined in `inventory/rpis.yaml`. This is a static inventory file that lists the hosts and their connection information.
+
+!!! example "inventory/rpis.yaml"
+
+    ```yaml
+    ---
+    rpis:
+      vars:
+        user: nicholas
+        ansible_user: nicholas
+      hosts:
+        pi00:
+          ansible_host: 192.168.3.219
+        pi01:
+          ansible_host: 192.168.3.229
+        pi02:
+          ansible_host: 192.168.3.250
+        pi04:
+          ansible_host: 192.168.2.88
+    ```
+
+### :book: Playbooks
+
+There are several playbooks available for managing the Raspberry Pi hosts:
+
+-   **Update All Raspberry Pis:** The `playbooks/update_rpis.yaml` playbook updates all Raspberry Pi hosts. It uses the `update_apt` and `update_git` roles.
+
+    To run this playbook:
+
+    ```bash
+    ansible-playbook playbooks/update_rpis.yaml
+    ```
+
+-   **Run a Single Task:** The `playbooks/task_rpis.yaml` playbook runs a single task on all Raspberry Pi hosts. It uses the `single` role.
+
+    To run this playbook:
+
+    ```bash
+    ansible-playbook playbooks/task_rpis.yaml
+    ```
+
+## :nas: OpenMediaVault Host
+
+I have an OpenMediaVault (OMV) instance running as a VM on my Proxmox host. It is managed as a single host.
+
+### :book: Playbooks
+
+-   **Update OMV:** The `playbooks/update_omv.yaml` playbook updates the OMV host. It runs the `omv-update` command.
+
+    To run this playbook:
+
+    ```bash
+    ansible-playbook playbooks/update_omv.yaml
+    ```
+
+    !!! note
+        The `omv-update` command is a wrapper script that is the recommended way to update OpenMediaVault. It is a non-interactive script that runs `apt update` and `apt upgrade` and also handles other OMV-specific configurations and checks to ensure the system remains stable.
+
+## :arrow_down: Homelab-Pull
+
+### :book: Playbooks
+
+-   **Remove homelab-pull:** The `playbooks/remove_homelab_pull.yaml` playbook removes the `homelab-pull` service and timer from all hosts.
+
+    To run this playbook:
+
+    ```bash
+    ansible-playbook playbooks/remove_homelab_pull.yaml
+    ```
 
 ## :gear: Role Configuration Variables
 
@@ -82,7 +154,7 @@ Variables for individual roles are stored in the `roles/<role name>/defaults/mai
 !!! example
 
     ```yaml
-    --8<-- "roles/linux_instance_generic/defaults/main.yml"
+    --8<-- "roles/setup/defaults/main.yml"
     ```
 
 ## :gear: Ansible Configuration File

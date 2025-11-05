@@ -3,6 +3,7 @@
   hosts:
     - rpis
     - proxmox_all_lxc
+    - omv
   become: true
 
   roles:

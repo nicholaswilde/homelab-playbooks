@@ -1,7 +1,0 @@
-[Unit]
-Description=Update beszel-agent if needed
-Wants=beszel-agent.service
-
-[Service]
-Type=oneshot
-ExecStart=/bin/sh -c '/usr/local/bin/beszel-agent update | grep -q "Successfully updated" && (echo "Update found, restarting beszel-agent" && systemctl restart beszel-agent) || echo "No updates found"'

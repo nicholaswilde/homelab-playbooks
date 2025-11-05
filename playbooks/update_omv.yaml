@@ -1,0 +1,7 @@
+---
+- name: Update omv
+  hosts: omv
+  become: true
+  tasks:
+    - name: Run omv-update
+      ansible.builtin.command: omv-update

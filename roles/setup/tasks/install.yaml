@@ -1,14 +1,30 @@
 ---
-- name: Setup apt-cacher-ng source
-  ansible.builtin.copy:
-    src: 00aptproxy
-    dest: "/etc/apt/apt.conf.d/00aptproxy"
+- name: "Check if the apt-cacher-ng proxy is reachable"
+  ansible.builtin.uri:
+    url: "{{ setup_proxy }}"
+    method: GET
+    status_code: 406
+    timeout: 5
+  register: url_check_result
+  ignore_errors: true
+  no_log: true
 
-- name: Update apt package list
+- name: "Setup apt-cacher-ng source"
+  ansible.builtin.template:
+    src: "00aptproxy.j2"
+    dest: "/etc/apt/apt.conf.d/00aptproxy"
+  when:
+    - not url_check_result.failed
+    - ansible_architecture != 'armhf'
+    - ansible_architecture != 'armv7l'
+    - ansible_architecture != 'armv6l'
+
+- name: "Update apt package list"
   ansible.builtin.apt:
     update_cache: true
+  ignore_errors: true
 
-- name: Install apt packages
+- name: "Install apt packages"
   ansible.builtin.apt:
     pkg:
       - git
@@ -17,13 +33,10 @@
       - ipcalc
       - net-tools
       - micro
-      - qemu-guest-agent
-      - gh
-      - screen
+      # - qemu-guest-agent
       - dnsutils
-      - task
-      - sops
       - jq
       - tmux
     state: latest
     update_cache: true
+  ignore_errors: true

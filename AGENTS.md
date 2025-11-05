@@ -26,7 +26,7 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 
 *   **Setup a single LXC container:**
     ```bash
-    ansible-playbook playbooks/setup_lxcSingle.yaml
+    ansible-playbook playbooks/setup_single.yaml
     ```
 
 *   **Update all hosts:**
@@ -34,10 +34,43 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
     ansible-playbook playbooks/update_all.yaml
     ```
 
+*   **Update OMV host:**
+    ```bash
+    ansible-playbook playbooks/update_omv.yaml
+    ```
+
+*   **Remove homelab-pull:**
+    ```bash
+    ansible-playbook playbooks/remove_homelab_pull.yaml
+    ```
+
+*   **Replace dotfiles3 with dotfiles:**
+    ```bash
+    ansible-playbook playbooks/replace_dotfiles.yaml
+    ```
+
 *   **See all available tasks:**
     ```bash
     task -l
     ```
+
+## Tasks
+
+The `Taskfile.yaml` provides a set of convenient tasks for common operations. Here are some of the most common tasks:
+
+*   `task deps`: Install dependencies.
+*   `task setup`: Setup a single LXC container.
+*   `task update`: Update a single LXC container.
+*   `task omv-update`: Update the OMV host.
+*   `task remove-homelab-pull`: Remove the homelab-pull service and timer.
+*   `task task-chromeos`: Run the chromeos task on all hosts.
+*   `task replace-dotfiles`: Replace the dotfiles3 repo with the dotfiles repo.
+*   `task ve`: Edit the vault.
+*   `task init`: Generate a new vault password.
+*   `task encrypt`: Encrypt the vault password.
+*   `task decrypt`: Decrypt the vault password.
+*   `task list`: List all inventory.
+*   `task ping`: Ping all hosts in inventory.
 
 ## Development Conventions
 
@@ -51,14 +84,17 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 ### Playbooks
 
 *   Playbooks are located in the `playbooks/` directory.
-*   Playbooks are named based on their function (e.g., `setup_lxcSingle.yaml`, `update_all.yaml`).
+*   Playbooks are named based on their function (e.g., `setup_single.yaml`, `update_all.yaml`).
 
 ### Roles
 
 *   Roles are located in the `roles/` directory.
-*   Each role is self-contained and has a specific purpose (e.g., `setup`, `update_apt`, `update_git`).
+*   Each role is self-contained and has a specific purpose. The main roles are:
+    *   `setup`: Configures a new generic Linux instance.
+    *   `update_apt`: Updates apt packages.
+    *   `update_git`: Updates git repositories.
 *   Role tasks are defined in `roles/<role>/tasks/main.yaml`.
-*   Role variables are stored in `roles/<role>/vars/main.yaml` and are often encrypted with Ansible Vault.
+*   Role variables are stored in `roles/<role>/defaults/main.yml` and are often encrypted with Ansible Vault.
 
 ### Vault
 
@@ -85,8 +121,6 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
     ```bash
     sops .vault_pass
     ```
-
-
 
 ### Dynamic Proxmox Inventory
 

@@ -39,13 +39,13 @@ This workflow describes the process for testing a new Ansible task before deploy
     -   `playbooks/task_all.yaml`: Deploys the task to all LXC containers and Raspberry Pis.
     -   `playbooks/task_lxcAll.yaml`: Deploys the task to all LXC containers.
 
-5.  **Incorporate into `linux_instance_generic` Role:**
+5.  **Incorporate into `setup` Role:**
 
-    After successful deployment, incorporate the new task into the `roles/linux_instance_generic` role. This ensures that the task is included in the setup process for new single hosts.
+    After successful deployment, incorporate the new task into the `roles/setup` role. This ensures that the task is included in the setup process for new single hosts.
 
 ## :rocket: Setting up a Single Host
 
-This workflow describes how to set up a new single host using the `linux_instance_generic` role. This role is designed to apply a generic Linux configuration to a new host.
+This workflow describes how to set up a new single host using the `setup` role. This role is designed to apply a generic Linux configuration to a new host.
 
 1.  **Add the Host to Inventory:**
 
@@ -55,7 +55,7 @@ This workflow describes how to set up a new single host using the `linux_instanc
 
 2.  **Create a Playbook:**
 
-    Create a new playbook that targets the new host and includes the `linux_instance_generic` role.
+    Create a new playbook that targets the new host and includes the `setup` role.
 
     ```yaml
     --- 
@@ -64,7 +64,7 @@ This workflow describes how to set up a new single host using the `linux_instanc
       become: true
 
       roles:
-        - role: linux_instance_generic
+        - role: setup
     ```
 
 3.  **Run the Playbook:**

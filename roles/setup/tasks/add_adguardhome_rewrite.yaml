@@ -3,7 +3,7 @@
   ansible.builtin.debug:
     var: rewrite
   when:
-    - debug_enabled
+    - setup_debug_enabled
     - rewrite is defined
 
 # - name: "AdGuard Home block"
@@ -21,7 +21,7 @@
 #         var: adguard_rewrites_response.json
 #       when:
 #         - adguard_rewrites_response.status == 200
-#         - debug_enabled
+#         - setup_debug_enabled
 
 #     - name: "Perform a boolean check for '{{ domain_to_check }}'"
 #       ansible.builtin.set_fact:
@@ -62,10 +62,10 @@
 #         var: add_rewrite_response
 #       when:
 #         - add_rewrite_response.status is defined
-#         - debug_enabled
+#         - setup_debug_enabled
 #         - add_rewrite_response.status == 200
 #   vars:
-#     adguard_url: "{{ linux_instance_generic_adguard_home_url }}"
+#     adguard_url: "{{ setup_adguard_home_url }}"
 #     domain_to_check: "{{ adguard_home_rewrite_domain }}"
 #   when:
 #     - adguard_home_rewrite_domain is defined

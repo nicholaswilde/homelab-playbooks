@@ -1,0 +1,35 @@
+---
+- name: Replace dotfiles3 with dotfiles
+  hosts: all
+  become: false
+  tasks:
+    - name: Check for dotfiles3 directory
+      ansible.builtin.stat:
+        path: "~/git/nicholaswilde/dotfiles3"
+      register: dotfiles3_dir
+
+    - name: Run stow delete in dotfiles3
+      ansible.builtin.command:
+        cmd: "stow -D ."
+        chdir: "~/git/nicholaswilde/dotfiles3"
+      when: dotfiles3_dir.stat.exists
+      ignore_errors: true
+
+    - name: Remove dotfiles3 directory
+      ansible.builtin.file:
+        path: "~/git/nicholaswilde/dotfiles3"
+        state: absent
+      when: dotfiles3_dir.stat.exists
+
+    - name: Clone dotfiles repo
+      ansible.builtin.git:
+        repo: "https://github.com/nicholaswilde/dotfiles.git"
+        dest: "~/git/nicholaswilde/dotfiles"
+        accept_hostkey: true
+        force: true
+
+    - name: Run stow install
+      ansible.builtin.command:
+        cmd: "task install"
+        chdir: "~/git/nicholaswilde/dotfiles"
+      ignore_errors: true

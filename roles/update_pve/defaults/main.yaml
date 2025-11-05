@@ -1,2 +1,2 @@
 ---
-update_pve_homelab_pve_folder: "{{ ansible_env.HOME }}/{{ linux_instance_generic_git_homelab_folder }}/pve/{{ inventory_hostname_short }}"
+update_pve_homelab_pve_folder: "{{ ansible_env.HOME }}/{{ setup_git_homelab_folder }}/pve/{{ inventory_hostname_short }}"

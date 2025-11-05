@@ -1,4 +1,0 @@
----
-setup_gpg_files:
-  public: public.pgp
-  private: private.pgp

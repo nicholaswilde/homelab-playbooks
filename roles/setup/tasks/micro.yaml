@@ -1,17 +1,23 @@
 ---
-- name: Download dotfiles
-  ansible.builtin.git:
-    repo: 'https://github.com/nicholaswilde/dotfiles.git'
-    dest: '/tmp/dotfiles'
-  
-- name: Create .config directory if it does not exist
+- name: "Create .config/micro directory if it does not exist"
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.config"
+    path: "{{ ansible_env.HOME }}/.config/micro"
     state: directory
-    # mode: '0755'
+    mode: '0755'
 
-- name: Copy micro config files over
-  ansible.builtin.copy:
-    src: "/tmp/dotfiles/.config/micro"
-    dest: "{{ ansible_env.HOME }}/.config"
-    remote_src: true
+- name: "Install micro plugins"
+  ansible.builtin.command: "micro -plugin install {{ item }}"
+  loop:
+    - "wc"
+    - "fzf"
+    - "wakatime"
+    - "quoter"
+
+- name: "Copy .wakatime.cfg from template"
+  ansible.builtin.template:
+    src: ".wakatime.cfg.j2"
+    dest: "~/.wakatime.cfg"
+    mode: '0600'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+  become_user: "{{ ansible_user }}"

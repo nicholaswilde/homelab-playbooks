@@ -1,36 +1,23 @@
 ---
-- name: Download notify script
-  ansible.builtin.uri:
-    url: https://chromium.googlesource.com/apps/libapps/+/HEAD/hterm/etc/hterm-notify.sh?format=TEXT
-    return_content: true
-  register: this
- 
-- name: Write notify script to file
-  ansible.builtin.copy:
-    content: "{{ this.content | b64decode }}"
-    dest: "/usr/local/bin/notify"
-    mode: 0755
+- name: "Download script for {{ item.destFile }}"
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "/usr/local/bin/{{ item.destFile }}"
+    mode: "0755"
+  loop:
+    - url: "https://gist.githubusercontent.com/nicholaswilde/28f1d91df80ab3723ed7697460349ac8/raw/a03fe7e978b786eaa5d0590385d6591f4262755e/term-notify.sh"
+      destFile: "notify"
+    - url: "https://gist.githubusercontent.com/nicholaswilde/28f1d91df80ab3723ed7697460349ac8/raw/a03fe7e978b786eaa5d0590385d6591f4262755e/osc52.sh"
+      destFile: "copy"
 
-- name: Download show-file script
+- name: "Download hterm-show-file.sh script"
   ansible.builtin.uri:
-    url: https://chromium.googlesource.com/apps/libapps/+/HEAD/hterm/etc/hterm-show-file.sh?format=TEXT
+    url: "https://chromium.googlesource.com/apps/libapps/+/HEAD/hterm/etc/hterm-show-file.sh?format=TEXT"
     return_content: true
   register: this
- 
-- name: Write show-file script to file
+
+- name: "Write hterm-show-file.sh script to file"
   ansible.builtin.copy:
     content: "{{ this.content | b64decode }}"
     dest: "/usr/local/bin/show-file"
-    mode: 0755
-
-- name: Download copy script
-  ansible.builtin.uri:
-    url: https://chromium.googlesource.com/apps/libapps/+/HEAD/hterm/etc/osc52.sh?format=TEXT
-    return_content: true
-  register: this
- 
-- name: Write copy script to file
-  ansible.builtin.copy:
-    content: "{{ this.content | b64decode }}"
-    dest: "/usr/local/bin/copy"
-    mode: 0755
+    mode: "0755"

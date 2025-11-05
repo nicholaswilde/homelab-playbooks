@@ -1,10 +1,45 @@
 ---
-- name: Download reprepro key
-  ansible.builtin.get_url:
-    url: http://deb.l.nicholaswilde.io/public.gpg.key
-    dest: /etc/apt/trusted.gpg.d/reprepro.asc
+- name: "Check if the reprepro server is reachable"
+  ansible.builtin.uri:
+    url: "{{ setup_reprepro_key_url }}"
+    method: GET
+    status_code: 200
+    timeout: 5
+  register: url_check_result
+  ignore_errors: true
+  no_log: true
 
-- name: Setup reprepro source
-  ansible.builtin.copy:
-    src: reprepro.list
-    dest: "/etc/apt/sources.list.d/reprepro.list"
+- name: "Run reprepro block"
+  when: not url_check_result.failed
+  block:
+    - name: "Download reprepro key"
+      ansible.builtin.get_url:
+        url: "{{ setup_reprepro_key_url }}"
+        dest: "/etc/apt/trusted.gpg.d/reprepro.asc"
+      ignore_errors: true
+
+    - name: "Setup reprepro source"
+      ansible.builtin.template:
+        src: "reprepro.list.j2"
+        dest: "/etc/apt/sources.list.d/reprepro.list"
+
+    - name: "Install apt packages task and sops"
+      ansible.builtin.apt:
+        pkg:
+          - task
+          - sops
+          - ripgrep
+          - fd
+          - eza
+          - bat
+          - tea
+          - duf
+          - gh
+          - gitea-tea
+          - lpass
+          - neovim
+          - sd
+          - btop
+        state: latest
+        update_cache: true
+      ignore_errors: true
