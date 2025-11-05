@@ -71,6 +71,10 @@ all:
 
 By including this static inventory file when running your Ansible playbooks, the `ansible_user` specified in `inventory/static_arm64.yaml` will take precedence for the `arm64` host, while other dynamically discovered hosts will continue to use the `ansible_user` defined in the Proxmox dynamic inventory configuration.
 
+## :fontawesome-brands-raspberry-pi: Raspberry Pi Hosts
+
+I have multiple Raspberry Pis on my network that are not part my dynamic inventory.
+
 ## :gear: Role Configuration Variables
 
 Variables for individual roles are stored in the `roles/<role name>/defaults/main.yaml`
