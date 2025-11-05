@@ -6,9 +6,11 @@ This project includes several tasks for testing the Ansible playbooks against di
 
 To test the playbooks on amd64 hosts, run the following command:
 
-```bash
-task amd64-test
-```
+=== "Task"
+
+    ```bash
+    task amd64-test
+    ```
 
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/amd64.proxmox.yaml` inventory.
 
@@ -16,9 +18,11 @@ This task will run the `ansible.builtin.apt` module with `update_cache=true` on 
 
 To test the playbooks on arm64 hosts, run the following command:
 
-```bash
-task arm64-test
-```
+=== "Task"
+
+    ```bash
+    task arm64-test
+    ```
 
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/arm64.proxmox.yaml` inventory.
 
@@ -26,9 +30,11 @@ This task will run the `ansible.builtin.apt` module with `update_cache=true` on 
 
 To test the playbooks on Raspberry Pi hosts, run the following command:
 
-```bash
-task rpis-test
-```
+=== "Task"
+
+    ```bash
+    task rpis-test
+    ```
 
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/rpis.yaml` inventory.
 
@@ -45,10 +51,12 @@ This project includes a Dockerized testing environment in the `test/` subdirecto
 
 To run the Dockerized test, navigate to the `test/` directory and use the `task run` command:
 
-```bash
-cd test/
-task run
-```
+=== "Task"
+
+    ```bash
+    cd test/
+    task run
+    ```
 
 This will execute the `setup-container.sh` script, which automates the entire testing process:
 
