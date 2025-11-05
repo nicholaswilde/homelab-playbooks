@@ -19,6 +19,12 @@
 
 ---
 
+## :frame_with_picture: Background
+
+This repository contains Ansible playbooks used to configure and manage my homelab environment. The playbooks are designed to be idempotent and are used to set up and maintain various services and configurations across different types of machines, including Ubuntu servers, Raspberry Pis, Proxmox VE nodes, LXC containers, and Docker hosts.
+
+---
+
 ## :construction_worker: Prerequisites
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
