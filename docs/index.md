@@ -13,8 +13,8 @@
 - **Install dependencies:** `task deps`
 - **Generate a new vault password:** `task init`
 - **Edit secrets:** `task ve`
+- - **Edit role variables:** `ansible-vault edit roles/<role>/vars/main.yaml`
 - **Update all hosts:** `ansible-playbook playbooks/update_all.yaml`
-- **Edit role variables:** `ansible-vault edit roles/<role>/vars/main.yaml`
 - **See all available tasks:** `task -l`
 
 ---
