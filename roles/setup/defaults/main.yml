@@ -6,7 +6,8 @@ setup_git_homelab_folder: "git/nicholaswilde/homelab"
 
 setup_nfs_path: "storage -fstype=nfs4,rw 192.168.2.19:/storage"
 
-setup_proxy: "http://192.168.2.40:3142"
+# setup_proxy: "http://192.168.2.40:3142"
+setup_proxy: "http://aptcache.l.nicholaswilde.io:3142"
 
 setup_beszel_key: ""
 
