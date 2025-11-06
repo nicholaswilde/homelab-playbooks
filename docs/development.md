@@ -10,17 +10,37 @@ The documentation is built using [MkDocs](https://www.mkdocs.org/) with the [Mat
 
 To install the documentation dependencies, run the following command:
 
-```bash
-task docs-deps
-```
+=== "Task"
+
+    ```bash
+    task docs-deps
+    ```
+
+=== "Manual"
+
+    ```bash
+    pipx install mkdocs
+    pipx install mkdocs-material
+    pipx install pymdown-extensions
+    ```
 
 ### :rocket: Local Development Server
 
 To start a local development server that automatically reloads when you make changes, run:
 
-```bash
-task serve
-```
+=== "Task"
+
+    ```bash
+    task serve
+    ```
+
+=== "Manual"
+
+    ```bash
+     docker run --rm -it -p 8000:8000 -v ${PWD}:/docs \
+        --platform linux/amd64 nicholaswilde/mkdocs-material serve \
+        --dev-addr 0.0.0.0:8000 -f ./mkdocs.yml
+    ```
 
 This will make the documentation available at `http://localhost:8000`.
 
@@ -28,6 +48,14 @@ This will make the documentation available at `http://localhost:8000`.
 
 To deploy the documentation to GitHub Pages, run:
 
-```bash
-task docs-deploy
-```
+=== "Task"
+
+    ```bash
+    task docs-deploy
+    ```
+
+=== "Manual"
+
+    ```bash
+    mkdocs gh-deploy --force
+    ```

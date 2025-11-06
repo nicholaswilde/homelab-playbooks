@@ -39,7 +39,8 @@ To create a new vault password file, use the `task init` command:
 === "Manual"
 
     ```bash
-    
+    openssl rand -hex 64 > .vault_pass
+    chmod 600 .vault_pass    
     ```
 
 This will create a `.vault_pass` file in the root directory. This file should be kept secret and is used to encrypt/decrypt sensitive variables. The `.vault_pass` file is encrypted using SOPS.

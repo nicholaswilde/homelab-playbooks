@@ -16,6 +16,7 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 *   `task task_all`: Run a single task on all hosts.
 *   `task task_lxcAll`: Run a single task on all LXC containers.
 *   `task task_rpis`: Run a single task on all Raspberry Pis.
+*   `task replace-apt-proxy`: Replace the apt proxy URL on all hosts.
 
 ## :nas: OMV Tasks
 

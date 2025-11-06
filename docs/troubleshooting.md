@@ -50,9 +50,17 @@ When troubleshooting Ansible playbooks, it's often helpful to inspect the values
 
 To list all inventory variables, run the following command:
 
-```bash
-task list
-```
+=== "Task"
+
+    ```bash
+    task list
+    ```
+
+=== "Manaul"
+
+    ```bash
+    ansible-inventory -i ./inventory/ --vars --list -y
+    ```
 
 This command will output a detailed YAML representation of your entire inventory, including all host and group variables, which can be invaluable for debugging.
 

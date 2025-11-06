@@ -12,6 +12,12 @@ To test the playbooks on amd64 hosts, run the following command:
     task amd64-test
     ```
 
+=== "Manual"
+
+    ```bash
+    ansible proxmox_all_lxc -i inventory/amd64.proxmox.yaml -m ansible.builtin.apt -a "update_cache=true" -b
+    ```
+
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/amd64.proxmox.yaml` inventory.
 
 ## :fontawesome-solid-phone: ARM64
@@ -24,6 +30,12 @@ To test the playbooks on arm64 hosts, run the following command:
     task arm64-test
     ```
 
+=== "Manual"
+
+    ```bash
+    ansible proxmox_all_lxc -i inventory/arm64.proxmox.yaml -m ansible.builtin.apt -a "update_cache=true" -b
+    ```
+
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/arm64.proxmox.yaml` inventory.
 
 ## :fontawesome-brands-raspberry-pi: Raspberry Pi
@@ -34,6 +46,12 @@ To test the playbooks on Raspberry Pi hosts, run the following command:
 
     ```bash
     task rpis-test
+    ```
+
+=== "Manual"
+
+    ```bash
+    ansible rpis -i inventory/rpis.yaml -m ansible.builtin.apt -a "update_cache=true" -b
     ```
 
 This task will run the `ansible.builtin.apt` module with `update_cache=true` on all hosts in the `inventory/rpis.yaml` inventory.
@@ -56,6 +74,13 @@ To run the Dockerized test, navigate to the `test/` directory and use the `task 
     ```bash
     cd test/
     task run
+    ```
+
+=== "Manual"
+
+    ```bash
+    cd test/
+    ./setup-container.sh
     ```
 
 This will execute the `setup-container.sh` script, which automates the entire testing process:

@@ -7,16 +7,6 @@ vars:
   PORT: 8000
   IMAGE: nicholaswilde/mkdocs-material
 tasks:
-  deps:
-    desc: Install dependencies
-    preconditions:
-      - test -f requirements.yaml
-    cmds:
-      - sudo apt install -y pipx && pipx ensurepath
-      - pipx upgrade-all
-      - ansible-galaxy role install -r requirements.yaml
-      - ansible-galaxy collection install -r requirements.yaml
-
   docs-deps:
     desc: Install mkdocs-material and pymdown-extensions
     cmds:
@@ -111,7 +101,9 @@ tasks:
     preconditions:
       - test -f requirements.yaml
     cmds:
-      - sudo apt install -y pipx && pipx install --include-deps ansible
+      - sudo apt install -y pipx
+      - pipx ensurepath
+      - pipx install --include-deps ansible
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
   setup:
@@ -138,6 +130,10 @@ tasks:
     desc: Replace dotfiles3 with dotfiles repo
     cmds:
       - ansible-playbook playbooks/replace_dotfiles.yaml
+  replace-apt-proxy:
+    desc: Replace apt proxy URL
+    cmds:
+      - ansible-playbook playbooks/replace_apt_proxy.yaml
   ve:
     desc: Edit vault
     cmds:

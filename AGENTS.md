@@ -86,6 +86,18 @@ The `Taskfile.yaml` provides a set of convenient tasks for common operations. He
 *   Playbooks are located in the `playbooks/` directory.
 *   Playbooks are named based on their function (e.g., `setup_single.yaml`, `update_all.yaml`).
 
+### Host Targeting
+
+When creating a playbook that should target all hosts, use the following `hosts` definition to ensure the correct machines are included while excluding specific ones:
+
+```yaml
+hosts:
+  - rpis
+  - proxmox_all_lxc:!mealie:!ntfy
+```
+
+This configuration targets all hosts in the `rpis` group and all hosts in the `proxmox_all_lxc` group, except for `mealie` and `ntfy`.
+
 ### Roles
 
 *   Roles are located in the `roles/` directory.

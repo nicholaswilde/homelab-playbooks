@@ -1,0 +1,14 @@
+---
+- name: Replace apt proxy URL
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
+  become: true
+  tasks:
+    - name: "Replace old apt proxy URL with new one"
+      ansible.builtin.replace:
+        path: /etc/apt/apt.conf.d/00aptproxy
+        regexp: 'http://192.168.2.40:3142'
+        replace: 'http://aptcache.l.nicholaswilde.io:3142'
+        backup: true
+      ignore_errors: true
