@@ -126,6 +126,8 @@ The `Taskfile.yaml` provides a set of convenient tasks for common operations. He
 
 This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup. The `ansible_host` variable is automatically set to the container's IP address.
 
+**Note:** Do not modify the `ansible_user` variable in the Proxmox dynamic inventory files. The value is intentionally set to a literal string that is processed by the dynamic inventory script.
+
 ## Inventory Management
 
 *   **List all inventory:**

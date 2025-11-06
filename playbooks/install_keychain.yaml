@@ -1,0 +1,12 @@
+---
+- name: Install keychain
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
+  become: true
+  tasks:
+    - name: Install keychain
+      ansible.builtin.apt:
+        name: keychain
+        state: latest
+        update_cache: true
