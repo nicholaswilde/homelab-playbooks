@@ -1,6 +1,8 @@
 ---
 - name: Replace dotfiles3 with dotfiles
-  hosts: all
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
   become: false
   tasks:
     - name: Check for dotfiles3 directory
