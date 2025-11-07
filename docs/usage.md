@@ -11,6 +11,7 @@ The primary way to use this project is by running Ansible playbooks. The `Taskfi
 
 *   `task bootstrap`: Bootstrap the environment by installing dependencies.
 *   `task deps`: Install Ansible roles and collections from `requirements.yaml`.
+*   `task update-deps`: Update Ansible, ansible-lint, and Ansible roles and collections from `requirements.yaml`.
 *   `task setup`: Setup a single LXC using the `playbooks/setup_single.yaml` playbook.
 *   `task update`: Update a single LXC using the `playbooks/update_single.yaml` playbook.
 *   `task task_all`: Run a single task on all hosts.

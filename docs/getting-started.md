@@ -1,5 +1,13 @@
 # :rocket: Getting Started
 
+## :construction_worker: Prerequisites
+
+Before you can use Ansible to manage your hosts, you need to ensure that Python 3 is installed on them. For Debian-based systems, you can install it with the following command:
+
+```bash
+sudo apt update && sudo apt install -y python3
+```
+
 ## :package: Install dependencies
 
 This project uses [Task](https://taskfile.dev/) to manage dependencies. To install all the necessary dependencies, run the following command:
@@ -15,6 +23,7 @@ This project uses [Task](https://taskfile.dev/) to manage dependencies. To insta
     ```bash
     sudo apt install -y pipx
     pipx install --include-deps ansible
+    pipx inject ansible ansible-lint
     ansible-galaxy role install -r requirements.yaml
     ansible-galaxy collection install -r requirements.yaml
     ```

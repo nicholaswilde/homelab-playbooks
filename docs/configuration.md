@@ -4,6 +4,22 @@
 
 This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup.
 
+### :key: Creating a Proxmox API Token
+
+To use the dynamic inventory, you need to create a Proxmox API token. Here's how to do it:
+
+1.  **Log in to the Proxmox web interface.**
+2.  **Navigate to `Datacenter` -> `Permissions` -> `API Tokens`.**
+3.  **Click `Add` to create a new API token.**
+4.  **Select the user you want to create the token for (e.g., `root@pam`).**
+5.  **Provide a `Token ID` (e.g., `ansible`).**
+6.  **Uncheck the `Privilege Separation` checkbox.** This is important for the dynamic inventory to work correctly.
+7.  **Click `Add`.**
+8.  **Copy the `Token ID` and `Secret`.** You will need these for your Ansible configuration. The secret will not be shown again, so make sure to save it in a secure location.
+
+!!! note "Security Recommendation"
+    For enhanced security, it is recommended to create a dedicated, non-root user for Ansible and to generate the API token under that user. This user should be granted only the minimum necessary permissions for Ansible to manage your Proxmox resources.
+
 ### :wrench: Options
 
 The following options can be configured in `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml`:

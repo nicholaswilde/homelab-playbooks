@@ -31,6 +31,9 @@ This repository contains Ansible playbooks used to configure and manage my homel
 - [Python](https://www.python.org/downloads/)
 - [Task](https://taskfile.dev/installation/)
 
+!!! note
+    Please ensure that `python3` is installed on the hosts you want to manage. For more details, see the [Getting Started](./getting-started.md#prerequisites) guide.
+
 ## :package: Installation
 
 To get started, clone the repository and install the dependencies:
