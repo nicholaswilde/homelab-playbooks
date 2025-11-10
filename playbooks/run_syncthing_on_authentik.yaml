@@ -1,0 +1,11 @@
+---
+- name: Run Syncthing setup on authentik
+  hosts: authentik
+  become: true
+  vars:
+    syncthing_run_user: "{{ ansible_user }}"
+  tasks:
+    - name: Import setup role and run syncthing tasks
+      ansible.builtin.include_role:
+        name: setup
+        tasks_from: syncthing.yaml

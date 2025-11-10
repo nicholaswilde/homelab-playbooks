@@ -24,4 +24,4 @@ token_secret: !vault |
 # Set the ansible_host to the IP address
 compose:
   ansible_host: proxmox_agent_interfaces[1]['ip-addresses'][0] | default(proxmox_net0.ip) | ansible.utils.ipaddr('address')
-  ansible_user: "'root'"
+  ansible_user: "'nicholas' if name == 'arm64' else 'root'"

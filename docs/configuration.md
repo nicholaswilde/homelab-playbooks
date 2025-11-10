@@ -69,23 +69,21 @@ compose:
 
 The `ansible_user` variable in the `compose` section sets the default SSH user for all discovered Proxmox LXC containers. In the example above, it is set to `'root'` for all containers.
 
-### :pencil: Overriding `ansible_user` for Individual Hosts
+### :pencil: Conditionally Setting `ansible_user`
 
-If you need to set a different `ansible_user` for a specific Proxmox host or a subset of hosts, you can do so by creating a static inventory file. This allows you to override the dynamic inventory's `ansible_user` setting for those particular hosts.
+You can conditionally set the `ansible_user` for specific hosts within the dynamic inventory by using a Jinja2 expression in the `compose` section. This is useful when most hosts use a default user (like `root`), but a few require a different user.
 
-For example, you can create a file like `inventory/static_arm64.yaml` (as shown below) to define specific connection parameters for an individual ARM64 host:
+The `name` variable, which corresponds to the Proxmox guest's name, can be used in the conditional.
+
+For example, to use the `nicholas` user for the host named `arm64` and `root` for all other hosts discovered by this inventory source, you can set `ansible_user` as follows:
 
 ```yaml
----
-all:
-  hosts:
-    arm64:
-      ansible_host: <IP_ADDRESS_OF_ARM64>
-      ansible_user: <YOUR_USERNAME>
-      ansible_private_key_file: /home/nicholas/.ssh/id_ed25519 # Assuming this is the key you want to use
+compose:
+  ansible_host: proxmox_agent_interfaces[1]['ip-addresses'][0] | default(proxmox_net0.ip) | ansible.utils.ipaddr('address')
+  ansible_user: "'nicholas' if name == 'arm64' else 'root'"
 ```
 
-By including this static inventory file when running your Ansible playbooks, the `ansible_user` specified in `inventory/static_arm64.yaml` will take precedence for the `arm64` host, while other dynamically discovered hosts will continue to use the `ansible_user` defined in the Proxmox dynamic inventory configuration.
+This approach keeps the user configuration within the dynamic inventory file, avoiding the need for separate static inventory files for overrides.
 
 ## :fontawesome-brands-raspberry-pi: Raspberry Pi Hosts
 

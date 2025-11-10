@@ -125,6 +125,7 @@
     - name: "Get the API key of the managed node"
       ansible.builtin.command: "syncthing cli config gui apikey get"
       register: managed_node_api_keys
+      become: true
       become_user: "{{ syncthing_run_user }}"
       ignore_errors: true
       changed_when: false
@@ -132,7 +133,7 @@
     - name: "Set fact for API key"
       ansible.builtin.set_fact:
         managed_node_api_key: "{{ managed_node_api_keys.stdout_lines[0] }}"
-      when: managed_node_api_keys | length > 0
+      when: not managed_node_api_keys.failed
 
     - name: "Show API key"
       ansible.builtin.debug:
