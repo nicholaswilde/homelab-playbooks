@@ -1,0 +1,27 @@
+---
+- name: Install applications
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
+  become: true
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - bat
+          - btop
+          - duf
+          - eza
+          - fd-find
+          - fzf
+          - gh
+          - glow
+          # - lastpass-cli
+          # - neovim
+          - ripgrep
+          - sd
+          - sops
+          - task
+          - tea
+        state: present
+        update_cache: true

@@ -4,4 +4,4 @@
   become: true
   tasks:
     - name: Run omv-update
-      ansible.builtin.command: omv-update
+      ansible.builtin.command: omv-upgrade

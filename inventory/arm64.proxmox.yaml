@@ -21,7 +21,11 @@ token_secret: !vault |
 # This tells the plugin to get IPs for LXC containers
 # want_proxmox_lxc_interfaces: true
 
+groups:
+  docker: "'docker' in proxmox_tags"
+
 # Set the ansible_host to the IP address
 compose:
   ansible_host: proxmox_agent_interfaces[1]['ip-addresses'][0] | default(proxmox_net0.ip) | ansible.utils.ipaddr('address')
   ansible_user: "'root'"
+  # ansible_user: "'nicholas' if proxmox_hostname == 'arm64' else 'root'"

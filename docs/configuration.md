@@ -4,6 +4,22 @@
 
 This project uses dynamic inventory for Proxmox VE. The inventory files `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml` use the `community.proxmox.proxmox` plugin to connect to a Proxmox VE instance and retrieve information about LXC containers. This allows for dynamic discovery of hosts based on your Proxmox setup.
 
+### :key: Creating a Proxmox API Token
+
+To use the dynamic inventory, you need to create a Proxmox API token. Here's how to do it:
+
+1.  **Log in to the Proxmox web interface.**
+2.  **Navigate to `Datacenter` -> `Permissions` -> `API Tokens`.**
+3.  **Click `Add` to create a new API token.**
+4.  **Select the user you want to create the token for (e.g., `root@pam`).**
+5.  **Provide a `Token ID` (e.g., `ansible`).**
+6.  **Uncheck the `Privilege Separation` checkbox.** This is important for the dynamic inventory to work correctly.
+7.  **Click `Add`.**
+8.  **Copy the `Token ID` and `Secret`.** You will need these for your Ansible configuration. The secret will not be shown again, so make sure to save it in a secure location.
+
+!!! note "Security Recommendation"
+    For enhanced security, it is recommended to create a dedicated, non-root user for Ansible and to generate the API token under that user. This user should be granted only the minimum necessary permissions for Ansible to manage your Proxmox resources.
+
 ### :wrench: Options
 
 The following options can be configured in `inventory/amd64.proxmox.yaml` and `inventory/arm64.proxmox.yaml`:
@@ -53,23 +69,21 @@ compose:
 
 The `ansible_user` variable in the `compose` section sets the default SSH user for all discovered Proxmox LXC containers. In the example above, it is set to `'root'` for all containers.
 
-### :pencil: Overriding `ansible_user` for Individual Hosts
+### :pencil: Conditionally Setting `ansible_user`
 
-If you need to set a different `ansible_user` for a specific Proxmox host or a subset of hosts, you can do so by creating a static inventory file. This allows you to override the dynamic inventory's `ansible_user` setting for those particular hosts.
+You can conditionally set the `ansible_user` for specific hosts within the dynamic inventory by using a Jinja2 expression in the `compose` section. This is useful when most hosts use a default user (like `root`), but a few require a different user.
 
-For example, you can create a file like `inventory/static_arm64.yaml` (as shown below) to define specific connection parameters for an individual ARM64 host:
+The `name` variable, which corresponds to the Proxmox guest's name, can be used in the conditional.
+
+For example, to use the `nicholas` user for the host named `arm64` and `root` for all other hosts discovered by this inventory source, you can set `ansible_user` as follows:
 
 ```yaml
----
-all:
-  hosts:
-    arm64:
-      ansible_host: <IP_ADDRESS_OF_ARM64>
-      ansible_user: <YOUR_USERNAME>
-      ansible_private_key_file: /home/nicholas/.ssh/id_ed25519 # Assuming this is the key you want to use
+compose:
+  ansible_host: proxmox_agent_interfaces[1]['ip-addresses'][0] | default(proxmox_net0.ip) | ansible.utils.ipaddr('address')
+  ansible_user: "'nicholas' if name == 'arm64' else 'root'"
 ```
 
-By including this static inventory file when running your Ansible playbooks, the `ansible_user` specified in `inventory/static_arm64.yaml` will take precedence for the `arm64` host, while other dynamically discovered hosts will continue to use the `ansible_user` defined in the Proxmox dynamic inventory configuration.
+This approach keeps the user configuration within the dynamic inventory file, avoiding the need for separate static inventory files for overrides.
 
 ## :fontawesome-brands-raspberry-pi: Raspberry Pi Hosts
 

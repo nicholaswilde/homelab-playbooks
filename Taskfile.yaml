@@ -104,6 +104,7 @@ tasks:
       - sudo apt install -y pipx
       - pipx ensurepath
       - pipx install --include-deps ansible
+      - pipx inject ansible ansible-lint
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
   setup:
@@ -114,6 +115,16 @@ tasks:
     desc: Update a single LXC
     cmds:
       - ansible-playbook playbooks/update_single.yaml
+  update-ansible:
+    desc: Update ansible and ansible-lint
+    cmds:
+      - pipx upgrade --include-injected ansible
+  update-deps:
+    desc: Update dependencies
+    cmds:
+      - task: update-ansible
+      - ansible-galaxy role install -r requirements.yaml --force
+      - ansible-galaxy collection install -r requirements.yaml --force
   omv-update:
     desc: Update omv
     cmds:

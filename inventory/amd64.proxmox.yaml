@@ -23,6 +23,9 @@ token_secret: !vault |
 # This tells the plugin to get IPs for LXC containers
 # want_proxmox_lxc_interfaces: true
 
+# groups:
+#   docker: "'docker' in proxmox_tags"
+
 # This sets the 'ansible_host' variable to the container's IP
 # It finds the first IPv4 address on the 'net0' interface
 compose:

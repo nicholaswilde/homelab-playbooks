@@ -9,3 +9,6 @@
     - update_apt
     - role: update_git
       become: false
+
+- name: Update omv
+  ansible.builtin.import_playbook: update_omv.yaml

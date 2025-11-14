@@ -1,6 +1,8 @@
 ---
 - name: Remove homelab-pull
-  hosts: all
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
   become: true
   tasks:
     - name: Stop homelab-pull timer
