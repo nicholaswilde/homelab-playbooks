@@ -1,0 +1,33 @@
+---
+- name: Set all syncthing folders to receiveonly
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
+  gather_facts: false
+  become: true
+
+  vars:
+    syncthing_run_user: "{{ ansible_user }}"
+  tasks:
+    - name: "Check if Syncthing is installed"
+      ansible.builtin.command: "syncthing --version"
+      register: syncthing_is_installed
+      changed_when: syncthing_is_installed.rc != 0
+      ignore_errors: true
+      no_log: true
+
+    - name: "Set folders to receiveonly"
+      when: syncthing_is_installed.rc == 0
+      block:
+        - name: "Get a list of folders on the managed node"
+          ansible.builtin.command: "syncthing cli config folders list"
+          register: folders_list
+          become_user: "{{ syncthing_run_user }}"
+          ignore_errors: true
+          changed_when: false
+
+        - name: "Set folder type to receiveonly for each folder"
+          ansible.builtin.command: "syncthing cli config folders {{ item }} type set receiveonly"
+          loop: "{{ folders_list.stdout_lines }}"
+          become_user: "{{ syncthing_run_user }}"
+          when: folders_list.stdout_lines is defined

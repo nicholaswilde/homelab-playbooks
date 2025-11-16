@@ -1,0 +1,27 @@
+---
+- name: Check hosts
+  hosts:
+    - rpis
+    - proxmox_all_lxc:!mealie:!ntfy
+  gather_facts: false
+  tasks:
+    - name: Check if /etc/motd is blank
+      ansible.builtin.slurp:
+        src: /etc/motd
+      register: motd_content
+
+    - name: Display motd content
+      ansible.builtin.debug:
+        msg: "/etc/motd is blank"
+      when: motd_content.content | b64decode | trim == ""
+
+    - name: Check gpg keys
+      ansible.builtin.command: gpg -K
+      register: gpg_check
+      changed_when: false
+      ignore_errors: true
+
+    - name: Report gpg errors
+      ansible.builtin.debug:
+        msg: "gpg -K failed on {{ inventory_hostname }}: {{ gpg_check.stderr }}"
+      when: gpg_check.rc != 0
