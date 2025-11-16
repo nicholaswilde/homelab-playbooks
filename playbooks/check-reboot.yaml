@@ -1,0 +1,17 @@
+---
+- name: Check for reboot required on remote hosts (check-reboot.yaml)
+  hosts: proxmox_all_lxc:!mealie:!ntfy
+  become: true
+
+  tasks:
+    - name: Check if reboot is required
+      stat:
+        path: /var/run/reboot-required
+      register: reboot_required_check
+
+    - name: Collect reboot information
+      set_fact:
+        reboot_required: "{{ reboot_required_check.stat.exists }}"
+
+    - debug:
+        msg: "{{ inventory_hostname }}: Reboot required: {{ reboot_required }}"
