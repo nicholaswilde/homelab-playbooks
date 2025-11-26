@@ -32,12 +32,12 @@
           - fd
           - eza
           - bat
-          - tea
-          - duf
+          # - tea
+          # - duf
           - gh
-          - gitea-tea
+          # - gitea-tea
           # - lpass
-          - neovim
+          # - neovim
           - sd
           - btop
         state: latest

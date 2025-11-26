@@ -34,10 +34,11 @@
       - net-tools
       - micro
       # - qemu-guest-agent
-      - dnsutils
+      - bind9-dnsutils
       - jq
       - tmux
       - keychain
+      - stow
     state: latest
     update_cache: true
   ignore_errors: true
